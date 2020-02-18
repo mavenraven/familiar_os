@@ -1,2 +1,2 @@
-xxd -r dump > bin
-mkisofs -o myos.iso bin
+xxd -r dump > "$@"
+#mkisofs -o myos.iso bin
