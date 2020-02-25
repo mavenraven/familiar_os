@@ -103,7 +103,7 @@ int 0x10
 
 
 ;pad with nops upto bootloader magic bytes
-%rep 409
+%rep 414
 nop
 %endrep
 db 0x55
