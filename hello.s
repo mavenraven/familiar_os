@@ -1,8 +1,7 @@
 ; There is a standard format for the beginning of a binary file for bootup:
 ; that looks like:
 ; http://www.techpository.com/wp-content/uploads/2015/07/examiningpartitiontables.pdf
-; jmp instruction (3 bytes)
-; db 0xeb
+; jmp instruction (3 bytes) ; db 0xeb
 ; db 0x58
 ; db 0x90 ; nop, not actually used, see https://thestarman.pcministry.com/asm/mbr/ntFAT32brHexEd.htm
 ; 
@@ -26,6 +25,10 @@
 ; It turns out that this is just a convention though. The only thing the BIOS does is check for the magic 55aa bytes.
 ; If they're found, the PC is set to 0x00 and you're off to the races.
 
+%rep 4
+db 0x00
+%endrep
+db 0x55
 mov ah, 0x0e
 mov al, 0x53
 ; mov bh, 0x01
@@ -33,7 +36,7 @@ mov al, 0x53
 int 0x10
 
 ;pad with nops upto bootloader magic bytes
-%rep 504
+%rep 499
 nop
 %endrep
 db 0x55
