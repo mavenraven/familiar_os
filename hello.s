@@ -36,6 +36,4 @@ int 0x10
 
 db 0x55
 db 0xaa
-
-
-
+times 1474560 - ($ - $$) db 0
