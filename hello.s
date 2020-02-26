@@ -2,9 +2,8 @@
 ; that looks like:
 ; http://www.techpository.com/wp-content/uploads/2015/07/examiningpartitiontables.pdf
 ; jmp instruction (3 bytes) ;
-db 0xeb
-db 0x58
-db 0x90 ; nop, see https://thestarman.pcministry.com/asm/mbr/ntFAT32brHexEd.htm
+jmp _hello
+db 0x00
 ; 
 ;oem name (8 bytes)
 %rep 8
@@ -23,6 +22,7 @@ db 0x00
 db 0x00
 %endrep
 
+_hello:
 db 0x55
 mov ah, 0x0e
 mov al, 0x53
