@@ -22,6 +22,10 @@ db 0x00
 db 0x00
 %endrep
 
+;pad with nops upto bootloader magic bytes
+%rep 412
+nop
+%endrep
 _hello:
 db 0x55
 mov ah, 0x0e
@@ -30,10 +34,6 @@ mov al, 0x53
 ; mov cx, 0x01
 int 0x10
 
-;pad with nops upto bootloader magic bytes
-%rep 413
-nop
-%endrep
 db 0x55
 db 0xaa
 
