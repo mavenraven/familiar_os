@@ -23,12 +23,10 @@ db 0x00
 db 0x00
 %endrep
 
-hello: db 'hello world', 0x00
-main:
-  push hello
-  jmp puts
 puts:
+  pop cx
   pop bx
+  push cx
 .begin:
   mov dl, [bx]
   cmp dl, 0x00
@@ -39,8 +37,12 @@ puts:
   inc bx
   jmp .begin
 .end:
+  ret
 
-
+hello: db 'hello world', 0x00
+main:
+  push hello
+  call puts
 
 
 times 0x1fe - ($ - $$) db 0
