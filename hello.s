@@ -1,5 +1,7 @@
 org 0x7c00
 jmp main
+
+hello: db 'hello world', 0x00
 puts:
   pop cx
   pop bx
@@ -16,14 +18,13 @@ puts:
 .end:
   ret
 
-hello: db 'hello world', 0x00
 main:
   push hello
   call puts
 
 
-times 0x1fe - ($ - $$) db 0
+times (512 - 2) - ($ - $$) db 0
 db 0x55
 db 0xaa
 ; https://stackoverflow.com/a/15690134
-times (512 * 2) - ($ - $$) db 0
+times 512 - ($ - $$) db 0
