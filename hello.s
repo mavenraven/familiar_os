@@ -31,19 +31,23 @@ hello: db 'hello world', 0
 puts:
   pop bx
   mov ah, 0x0e
-  mov al, [hello] ;0x64
+  mov al, 0x63 ;0x64
   int 0x10
-  mov bx, hello
-.begin:
-  mov dl, [bx]
-  cmp dl, 0
-;  je  puts_end
+;  inc bx
   mov ah, 0x0e
-  mov al, dl
+  mov al, 0x64
   int 0x10
   inc bx
+;.begin:
+;  mov dl, [bx]
+;  cmp dl, 0
+;  je  .end
+;  mov ah, 0x0e
+;  mov al, dl
+;  int 0x10
+;  inc bx
 ;  jmp puts_begin
-.end:
+;.end:
 
 
 stack:
