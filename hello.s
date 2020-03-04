@@ -3,7 +3,6 @@ org 0x7c00
 ; that looks like:
 ; http://www.techpository.com/wp-content/uploads/2015/07/examiningpartitiontables.pdf
 ; jmp instruction (3 bytes) ;
-mov sp, stack
 mov bx, hello
 push bx
 jmp puts
@@ -31,13 +30,13 @@ hello: db 'hello world', 0
 puts:
   pop bx
   mov ah, 0x0e
-  mov al, 0x63 ;0x64
-  int 0x10
-;  inc bx
-  mov ah, 0x0e
-  mov al, 0x64
+  mov al, [bx] ;0x64
   int 0x10
   inc bx
+  mov ah, 0x0e
+  mov al, [bx] ;0x64
+  int 0x10
+;  inc bx
 ;.begin:
 ;  mov dl, [bx]
 ;  cmp dl, 0
@@ -50,7 +49,6 @@ puts:
 ;.end:
 
 
-stack:
 times 0x1fe - ($ - $$) db 0
 db 0x55
 db 0xaa
