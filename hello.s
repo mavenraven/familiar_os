@@ -1,3 +1,4 @@
+org 0x7c00
 ; There is a standard format for the beginning of a binary file for bootup:
 ; that looks like:
 ; http://www.techpository.com/wp-content/uploads/2015/07/examiningpartitiontables.pdf
@@ -22,8 +23,10 @@ db 0x00
 db 0x00
 %endrep
 _hello:
+mov ax, 0x53
+mov [0x7c00+512], ax
 mov ah, 0x0e
-mov al, 0x53
+mov al, [0x7c00+512]
 ; mov bh, 0x01
 ; mov cx, 0x01
 int 0x10
