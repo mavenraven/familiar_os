@@ -21,19 +21,15 @@ db 0x00
 %rep 54
 db 0x00
 %endrep
-
-;pad with nops upto bootloader magic bytes
-%rep 412
-nop
-%endrep
 _hello:
-db 0x55
 mov ah, 0x0e
 mov al, 0x53
 ; mov bh, 0x01
 ; mov cx, 0x01
 int 0x10
 
+
+times 0x1fe - ($ - $$) db 0
 db 0x55
 db 0xaa
 times 1474560 - ($ - $$) db 0
