@@ -25,5 +25,5 @@ main:
 times 0x1fe - ($ - $$) db 0
 db 0x55
 db 0xaa
-; https://stackoverflow.com/questions/15687318/i386-real-mode-loading-from-floppy/15687536#15687536
+; https://stackoverflow.com/a/15690134
 times (512 * 2) - ($ - $$) db 0
