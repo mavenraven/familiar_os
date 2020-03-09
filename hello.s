@@ -6,12 +6,11 @@ puts:
   pop cx
   pop bx
   push cx
-.begin:
-  mov dl, [bx]
-  cmp dl, 0x00
-  je .end
   mov ah, 0x0e
+.begin:
   mov al, [bx]
+  cmp al, 0x00
+  je .end
   int 0x10
   inc bx
   jmp .begin
@@ -21,7 +20,6 @@ puts:
 main:
   push hello
   call puts
-
 
 times (512 - 2) - ($ - $$) db 0
 db 0x55
