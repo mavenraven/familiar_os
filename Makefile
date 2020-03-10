@@ -9,4 +9,4 @@ clean:
 
 .PHONY: run
 run: all
-	qemu-system-x86_64 -m 4096 -drive file=$(o).img,format=raw -no-reboot
+	qemu-system-x86_64 -m 4096 -drive file=$(o).img,format=raw -no-reboot -serial stdio
