@@ -53,14 +53,23 @@ putx:
   ret
   
 main:
-  push hello
-  call puts
+  mov ah, 0
+  mov dx, 0
+  mov al, 0b10100011
+  int 0x14
 
-.loop:
-  mov al, [putx]
   push ax
   call putx
-  jmp .loop
+
+  mov dx, 0
+  mov al, 'a'
+  mov ah, 1
+  int 0x14
+   
+  push ax
+  call putx
+
+
 
 times (512 - 2) - ($ - $$) db 0
 db 0x55
