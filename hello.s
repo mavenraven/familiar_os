@@ -2,21 +2,37 @@ org 0x7c00
 jmp main
 
 hello: db 'hello world', 0x00
+
+init_serial:
+  mov ah, 0
+  mov dx, 0
+  mov al, 0b10100011
+  int 0x14
+  ret
+
+; prints a null terminated string to the terminal and to COM1
 puts:
   pop cx
   pop bx
   push cx
-  mov ah, 0x0e
 .begin:
   mov al, [bx]
   cmp al, 0x00
   je .end
+
+  mov ah, 0x0e
   int 0x10
+
+  mov dx, 0
+  mov ah, 1
+  int 0x14
+
   inc bx
   jmp .begin
 .end:
   ret
 
+; prints a 16 bit hex value to the terminal and to COM1
 putx:
   pop cx
   pop bx
@@ -40,36 +56,30 @@ putx:
 .continue:
   add cx, 4
   cmp cx, 16
-  jl .convert_nibble_loop
+  jle .convert_nibble_loop
   mov cx, 0
 .print_loop:
   mov ah, 0x0e
   pop bx
   mov al, bl
   int 0x10
+
+  mov dx, 0
+  mov ah, 1
+  int 0x14
+
   add cx, 1
   cmp cx, 4
   jl .print_loop
   ret
   
 main:
-  mov ah, 0
-  mov dx, 0
-  mov al, 0b10100011
-  int 0x14
+  call init_serial
+  push hello
+  call puts
 
-  push ax
+  push 0xcab
   call putx
-
-  mov dx, 0
-  mov al, 'a'
-  mov ah, 1
-  int 0x14
-   
-  push ax
-  call putx
-
-
 
 times (512 - 2) - ($ - $$) db 0
 db 0x55
