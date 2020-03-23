@@ -3,6 +3,7 @@ jmp main
 
 hello: db 'hello world', 0x00
 
+; from http://www.plantation-productions.com/Webster/www.artofasm.com/DOS/ch13/CH13-3.html
 init_serial:
   mov ah, 0
   mov dx, 0
