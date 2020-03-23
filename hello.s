@@ -11,7 +11,7 @@ init_serial:
   int 0x14
   ret
 
-; prints a null terminated string to the terminal and to COM1
+; prints a null terminated string to the terminal and to COM1 [with new line]
 puts:
   pop cx
   pop bx
@@ -31,6 +31,14 @@ puts:
   inc bx
   jmp .begin
 .end:
+  mov al, 0x0a
+  mov ah, 0x0e
+  int 0x10
+
+  mov dx, 0
+  mov ah, 1
+  int 0x14
+
   ret
 
 ; prints a 16 bit hex value to the terminal and to COM1
