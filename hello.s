@@ -21,9 +21,14 @@ putx:
   pop cx
   pop bx
   push cx
+  push bx
+  mov cx, 0
 
+.loop:
   ;nibble 1
-  mov bx, bx
+  pop bx
+  shr bx, cl
+  push bx
   and bx, 0x000F
   cmp bx, 0x000a
   jl  .zero_to_nine
@@ -41,6 +46,9 @@ putx:
   mov ah, 0x0e
   mov al, bl
   int 0x10
+  add cx, 4
+  cmp cx, 16
+  jl .loop
   ret
   
 main:
