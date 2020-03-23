@@ -56,7 +56,8 @@ main:
   push hello
   call puts
 
-  push main
+  mov al, [putx]
+  push ax
   call putx
 
 times (512 - 2) - ($ - $$) db 0
