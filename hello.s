@@ -56,9 +56,11 @@ main:
   push hello
   call puts
 
+.loop:
   mov al, [putx]
   push ax
   call putx
+  jmp .loop
 
 times (512 - 2) - ($ - $$) db 0
 db 0x55
