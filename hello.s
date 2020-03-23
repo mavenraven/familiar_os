@@ -17,9 +17,38 @@ puts:
 .end:
   ret
 
+putx:
+  pop cx
+  pop bx
+  push cx
+
+  ;nibble 1
+  mov bx, bx
+  and bx, 0x000F
+  cmp bx, 0x000a
+  jl  .zero_to_nine
+  jge .a_to_f
+
+.zero_to_nine:
+  add bx, 0x30
+  jmp .next
+
+.a_to_f:
+  add bx, 87
+  jmp .next
+
+.next:
+  mov ah, 0x0e
+  mov al, bl
+  int 0x10
+  ret
+  
 main:
   push hello
   call puts
+
+  push 0x6a
+  call putx
 
 times (512 - 2) - ($ - $$) db 0
 db 0x55
