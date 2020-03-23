@@ -78,7 +78,7 @@ main:
   push hello
   call puts
 
-  push 0xcab
+  push 0x7c00
   call putx
 
 times (512 - 2) - ($ - $$) db 0
