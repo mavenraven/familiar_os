@@ -22,31 +22,25 @@ putx:
   pop bx
   push cx
   mov cx, 0
-
-.loop:
-  ;nibble 1
+.convert_nibble_loop:
   shr bx, cl
   mov dx, bx
-  and dx, 0x000F
+  and dx, 0x000f
   cmp dx, 0x000a
   jl  .zero_to_nine
   jge .a_to_f
-
 .zero_to_nine:
   add dx, 0x30
   push dx
   jmp .continue
-
 .a_to_f:
   add dx, 87
   push dx
   jmp .continue
-
 .continue:
   add cx, 4
   cmp cx, 16
-  jl .loop
-
+  jl .convert_nibble_loop
   mov cx, 0
 .print_loop:
   mov ah, 0x0e
@@ -56,14 +50,13 @@ putx:
   add cx, 1
   cmp cx, 4
   jl .print_loop
-
-ret
+  ret
   
 main:
   push hello
   call puts
 
-  push 0x6a
+  push main
   call putx
 
 times (512 - 2) - ($ - $$) db 0
