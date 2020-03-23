@@ -21,35 +21,43 @@ putx:
   pop cx
   pop bx
   push cx
-  push bx
   mov cx, 0
 
 .loop:
   ;nibble 1
-  pop bx
   shr bx, cl
-  push bx
-  and bx, 0x000F
-  cmp bx, 0x000a
+  mov dx, bx
+  and dx, 0x000F
+  cmp dx, 0x000a
   jl  .zero_to_nine
   jge .a_to_f
 
 .zero_to_nine:
-  add bx, 0x30
-  jmp .next
+  add dx, 0x30
+  push dx
+  jmp .continue
 
 .a_to_f:
-  add bx, 87
-  jmp .next
+  add dx, 87
+  push dx
+  jmp .continue
 
-.next:
-  mov ah, 0x0e
-  mov al, bl
-  int 0x10
+.continue:
   add cx, 4
   cmp cx, 16
   jl .loop
-  ret
+
+  mov cx, 0
+.print_loop:
+  mov ah, 0x0e
+  pop bx
+  mov al, bl
+  int 0x10
+  add cx, 1
+  cmp cx, 4
+  jl .print_loop
+
+ret
   
 main:
   push hello
