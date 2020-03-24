@@ -48,7 +48,6 @@ putx:
   push cx
   mov cx, 0
 .convert_nibble_loop:
-  shr bx, cl
   mov dx, bx
   and dx, 0x000f
   cmp dx, 0x000a
@@ -63,9 +62,10 @@ putx:
   push dx
   jmp .continue
 .continue:
-  add cx, 4
-  cmp cx, 16
-  jle .convert_nibble_loop
+  shr bx, 4
+  add cx, 1
+  cmp cx, 4
+  jl .convert_nibble_loop
   mov cx, 0
 .print_loop:
   mov ah, 0x0e
@@ -87,7 +87,7 @@ main:
   push hello
   call puts
 
-  push 0x7c00
+  push 0x7cff
   call putx
 
 times (512 - 2) - ($ - $$) db 0
