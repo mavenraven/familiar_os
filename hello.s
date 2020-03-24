@@ -41,7 +41,7 @@ puts:
 
   ret
 
-; prints a 16 bit hex value to the terminal and to COM1
+; prints a 16 bit hex value to the terminal and to COM1 [with new line]
 putx:
   pop cx
   pop bx
@@ -80,15 +80,21 @@ putx:
   add cx, 1
   cmp cx, 4
   jl .print_loop
+
+  mov al, 0x0a
+  mov ah, 0x0e
+  int 0x10
+
+  mov dx, 0
+  mov ah, 1
+  int 0x14
+
   ret
   
 main:
   call init_serial
   push hello
   call puts
-
-  push 0x7cff
-  call putx
 
 times (512 - 2) - ($ - $$) db 0
 db 0x55
