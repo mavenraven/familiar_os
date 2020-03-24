@@ -96,8 +96,21 @@ main:
   push hello
   call puts
 
+  mov ah, 0x8
+  mov dl, 1
+  
+  int 0x13
+
+  push cx
+  call putx
+  
+
 times (512 - 2) - ($ - $$) db 0
 db 0x55
 db 0xaa
 ; https://stackoverflow.com/a/15690134
 times 512 - ($ - $$) db 0
+after:
+  push hello
+  call puts
+times 1024 - ($ - $$) db 0
