@@ -5,9 +5,10 @@ hello: db 'hello world', 0
 carry_flag: db 'carry flag:', 0
 return_code: db 'return code:', 0
 number_drives: db 'number of hard disk drives: ', 0
-logical_last_head: db 'logical last index of heads: ', 0
-logical_last_cylinder: db 'logical last index of cylinders: ', 0
-logical_last_sector: db 'logical last index of sectors: ', 0
+logical_last_head: db 'last index of heads: ', 0
+logical_last_cylinder: db 'last index of cylinders: ', 0
+logical_last_sector: db 'last index of sectors: ', 0
+sectors_read: db 'sctrs read ', 0
 
 ; from http://www.plantation-productions.com/Webster/www.artofasm.com/DOS/ch13/CH13-3.html
 init_serial:
@@ -177,7 +178,44 @@ main:
   push hello
   call puts
 
-  
+  mov ax, 0
+  mov es, ax
+  mov bx, after
+
+  mov ah, 0x2
+  mov al, 1
+  mov ch, 0
+  mov cl, 1
+  mov dh, 0
+  mov dl, 0
+
+  int 0x13
+   
+  pushf
+  pop bx
+  and bx, 0x0001
+  push bx
+  push carry_flag
+
+  mov bx, ax
+  and bx, 0xff00
+  shr bx, 8
+  push bx
+  push return_code
+
+  mov bx, ax
+  and bx, 0x00ff
+  push bx
+  push sectors_read
+ 
+  call puts
+  call putx
+
+  call puts
+  call putx
+
+  call puts
+  call putx
 
 
 times (512 - 2) - ($ - $$) db 0
@@ -186,6 +224,4 @@ db 0xaa
 ; https://stackoverflow.com/a/15690134
 times 512 - ($ - $$) db 0
 after:
-  push hello
-  call puts
-times 1024 - ($ - $$) db 0
+times 2048 - ($ - $$) dw 0xface
