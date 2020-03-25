@@ -171,6 +171,12 @@ output_drive_info:
   ret
   
 main:
+  mov ax, 0
+  mov ss, ax
+  mov sp, 0x7c00
+
+  push dx
+
   call init_serial
   
 ;  call output_drive_info
@@ -187,7 +193,8 @@ main:
   mov ch, 0
   mov cl, 2
   mov dh, 0
-  mov dl, 0
+  pop dx
+  and dx, 0x00ff
 
   int 0x13
    
