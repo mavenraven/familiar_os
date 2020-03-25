@@ -119,9 +119,9 @@ output_drive_info:
   push bx
   push carry_flag
 
-  push ax
   and ax, 0xff00
   shr ax, 8
+  push ax
   push return_code
 
   mov bx, dx
