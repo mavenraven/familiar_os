@@ -173,10 +173,10 @@ output_drive_info:
 main:
   call init_serial
   
-  call output_drive_info
+;  call output_drive_info
 
-  push hello
-  call puts
+;  push hello
+;  call puts
 
   mov ax, 0
   mov es, ax
@@ -185,7 +185,7 @@ main:
   mov ah, 0x2
   mov al, 1
   mov ch, 0
-  mov cl, 1
+  mov cl, 2
   mov dh, 0
   mov dl, 0
 
@@ -215,6 +215,10 @@ main:
   call putx
 
   call puts
+  call putx
+
+  mov bx, [after]
+  push bx
   call putx
 
 
