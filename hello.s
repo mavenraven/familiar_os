@@ -96,12 +96,8 @@ putx:
   int 0x14
 
   ret
-  
-main:
-  call init_serial
-  push hello
-  call puts
 
+output_drive_info:
   mov ah, 0x8
   mov dl, 0
   
@@ -160,6 +156,19 @@ main:
 
   call puts
   call putx
+
+  ret
+  
+main:
+  call init_serial
+  
+  call output_drive_info
+
+  push hello
+  call puts
+
+  
+
 
 times (512 - 2) - ($ - $$) db 0
 db 0x55
