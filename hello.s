@@ -41,6 +41,10 @@ puts:
   mov ah, 0x0e
   int 0x10
 
+  mov al, 0x0d
+  int 0x10
+
+  mov al, 0x0a
   mov dx, 0
   mov ah, 1
   int 0x14
@@ -90,6 +94,12 @@ putx:
   mov al, 0x0a
   mov ah, 0x0e
   int 0x10
+
+  mov al, 0x0d
+  int 0x10
+
+  mov al, 0x0a
+  mov dx, 0
 
   mov dx, 0
   mov ah, 1
