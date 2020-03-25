@@ -1,7 +1,13 @@
 org 0x7c00
 jmp main
 
-hello: db 'hello world', 0x00
+hello: db 'hello world', 0
+carry_flag: db 'carry flag:', 0
+return_code: db 'return code:', 0
+number_drives: db 'number of hard disk drives: ', 0
+logical_last_head: db 'logical last index of heads: ', 0
+logical_last_cylinder: db 'logical last index of cylinders: ', 0
+logical_last_sector: db 'logical last index of sectors: ', 0
 
 ; from http://www.plantation-productions.com/Webster/www.artofasm.com/DOS/ch13/CH13-3.html
 init_serial:
@@ -97,13 +103,63 @@ main:
   call puts
 
   mov ah, 0x8
-  mov dl, 1
+  mov dl, 0
   
   int 0x13
+   
+  pushf
+  pop bx
+  and bx, 0x0001
+  push bx
+  push carry_flag
 
-  push cx
-  call putx
+  push ax
+  and ax, 0xff00
+  shr ax, 8
+  push return_code
+
+  mov bx, dx
+  and bx, 0x00ff
+  push bx
+  push number_drives
+
+  mov bx, dx
+  and bx, 0xff00
+  shr bx, 8
+  push bx
+  push logical_last_head
   
+  mov bx, cx
+  and bx, 0b0000000000111111
+  push bx
+  push logical_last_sector
+
+  mov bx, cx
+  and bx, 0b1111111100000000
+  shr bx, 8
+  and cx, 0b0000000011000000
+  shl cx, 2
+  or bx, cx
+  push bx
+  push logical_last_cylinder
+
+  call puts
+  call putx
+
+  call puts
+  call putx
+
+  call puts
+  call putx
+
+  call puts
+  call putx
+
+  call puts
+  call putx
+
+  call puts
+  call putx
 
 times (512 - 2) - ($ - $$) db 0
 db 0x55
