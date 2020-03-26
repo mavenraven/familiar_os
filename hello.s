@@ -6,7 +6,7 @@ init:
 
   mov ax, 0
   mov es, ax
-  mov bx, after
+  mov bx, load
 
   mov ah, 0x2
   mov al, 1
@@ -26,7 +26,7 @@ db 0xaa
 ; https://stackoverflow.com/a/15690134
 times 512 - ($ - $$) db 0
 
-after:
+load:
   hello: db 'hello world', 0
   carry_flag: db 'carry flag:', 0
   return_code: db 'return code:', 0
@@ -54,7 +54,7 @@ puts:
   add bx, 4
   mov bx, [bx]
   
-.begin:
+.while:
   mov al, [bx]
   cmp al, 0x00
   je .end
@@ -67,7 +67,7 @@ puts:
   int 0x14
 
   inc bx
-  jmp .begin
+  jmp .while
 .end:
   mov al, 0x0a
   mov ah, 0x0e
@@ -89,9 +89,15 @@ puts:
 
 ; prints a 16 bit hex value to the terminal and to COM1 [with new line]
 putx:
-  pop cx
-  pop bx
+  push ax
+  push bx
   push cx
+  push dx
+
+  mov bx, sp
+  add bx, 4
+  mov bx, [bx]
+  
   mov cx, 0
 .convert_nibble_loop:
   mov dx, bx
@@ -140,6 +146,11 @@ putx:
   mov dx, 0
   mov ah, 1
   int 0x14
+
+  pop dx
+  pop cx
+  pop bx
+  pop ax
 
   ret
 
@@ -208,5 +219,8 @@ output_drive_info:
 main:
   push hello
   call puts
+
+  push sp
+  call putx
 
 times 2048 - ($ - $$) dw 0xface
