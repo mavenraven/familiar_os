@@ -2,7 +2,7 @@ o ?= familiar_os
 
 all: $(o).img
 
-$(o).img: hello.s
+$(o).img: init.s
 	nasm -f bin -o $(o).img $<
 clean:
 	rm -rf $(o).img

@@ -1,4 +1,10 @@
 org 0x7c00
+jmp init
+
+%include "putx.s"
+%include "puts.s"
+%include "init_serial.s"
+
 init:
   mov sp, 0x7c00
 
@@ -35,124 +41,6 @@ load:
   logical_last_cylinder: db 'last index of cylinders: ', 0
   logical_last_sector: db 'last index of sectors: ', 0
   sectors_read: db 'sctrs read ', 0
-
-; from http://www.plantation-productions.com/Webster/www.artofasm.com/DOS/ch13/CH13-3.html
-init_serial:
-  mov ah, 0
-  mov dx, 0
-  mov al, 0b10100011
-  int 0x14
-  ret
-
-; prints a null terminated string to the terminal and to COM1 [with new line]
-puts:
-  push bx
-  push ax
-  push dx
-
-  mov bx, sp
-  add bx, 4
-  mov bx, [bx]
-  
-.while:
-  mov al, [bx]
-  cmp al, 0x00
-  je .end
-
-  mov ah, 0x0e
-  int 0x10
-
-  mov dx, 0
-  mov ah, 1
-  int 0x14
-
-  inc bx
-  jmp .while
-.end:
-  mov al, 0x0a
-  mov ah, 0x0e
-  int 0x10
-
-  mov al, 0x0d
-  int 0x10
-
-  mov al, 0x0a
-  mov dx, 0
-  mov ah, 1
-  int 0x14
-
-  pop dx
-  pop ax
-  pop bx
-
-  ret
-
-; prints a 16 bit hex value to the terminal and to COM1 [with new line]
-putx:
-  push ax
-  push bx
-  push cx
-  push dx
-
-  mov bx, sp
-  add bx, 4
-  mov bx, [bx]
-  
-  mov cx, 0
-.convert_nibble_loop:
-  mov dx, bx
-  and dx, 0x000f
-  cmp dx, 0x000a
-  jl  .zero_to_nine
-  jge .a_to_f
-.zero_to_nine:
-  add dx, 0x30
-  push dx
-  jmp .continue
-.a_to_f:
-  add dx, 87
-  push dx
-  jmp .continue
-.continue:
-  shr bx, 4
-  add cx, 1
-  cmp cx, 4
-  jl .convert_nibble_loop
-  mov cx, 0
-.print_loop:
-  mov ah, 0x0e
-  pop bx
-  mov al, bl
-  int 0x10
-
-  mov dx, 0
-  mov ah, 1
-  int 0x14
-
-  add cx, 1
-  cmp cx, 4
-  jl .print_loop
-
-  mov al, 0x0a
-  mov ah, 0x0e
-  int 0x10
-
-  mov al, 0x0d
-  int 0x10
-
-  mov al, 0x0a
-  mov dx, 0
-
-  mov dx, 0
-  mov ah, 1
-  int 0x14
-
-  pop dx
-  pop cx
-  pop bx
-  pop ax
-
-  ret
 
 output_drive_info:
   mov ah, 0x8
