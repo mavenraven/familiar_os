@@ -1,14 +1,40 @@
 org 0x7c00
-jmp main
+init:
+  mov sp, 0x7c00
 
-hello: db 'hello world', 0
-carry_flag: db 'carry flag:', 0
-return_code: db 'return code:', 0
-number_drives: db 'number of hard disk drives: ', 0
-logical_last_head: db 'last index of heads: ', 0
-logical_last_cylinder: db 'last index of cylinders: ', 0
-logical_last_sector: db 'last index of sectors: ', 0
-sectors_read: db 'sctrs read ', 0
+  push dx
+
+  mov ax, 0
+  mov es, ax
+  mov bx, after
+
+  mov ah, 0x2
+  mov al, 1
+  mov ch, 0
+  mov cl, 2
+  mov dh, 0
+  pop dx
+  and dx, 0x00ff
+
+  int 0x13
+
+  jmp main
+
+times (512 - 2) - ($ - $$) db 0
+db 0x55
+db 0xaa
+; https://stackoverflow.com/a/15690134
+times 512 - ($ - $$) db 0
+
+after:
+  hello: db 'hello world', 0
+  carry_flag: db 'carry flag:', 0
+  return_code: db 'return code:', 0
+  number_drives: db 'number of hard disk drives: ', 0
+  logical_last_head: db 'last index of heads: ', 0
+  logical_last_cylinder: db 'last index of cylinders: ', 0
+  logical_last_sector: db 'last index of sectors: ', 0
+  sectors_read: db 'sctrs read ', 0
 
 ; from http://www.plantation-productions.com/Webster/www.artofasm.com/DOS/ch13/CH13-3.html
 init_serial:
@@ -20,9 +46,14 @@ init_serial:
 
 ; prints a null terminated string to the terminal and to COM1 [with new line]
 puts:
-  pop cx
-  pop bx
-  push cx
+  push bx
+  push ax
+  push dx
+
+  mov bx, sp
+  add bx, 4
+  mov bx, [bx]
+  
 .begin:
   mov al, [bx]
   cmp al, 0x00
@@ -49,6 +80,10 @@ puts:
   mov dx, 0
   mov ah, 1
   int 0x14
+
+  pop dx
+  pop ax
+  pop bx
 
   ret
 
@@ -169,70 +204,9 @@ output_drive_info:
   call putx
 
   ret
-  
+
 main:
-  mov ax, 0
-  mov ss, ax
-  mov sp, 0x7c00
-
-  push dx
-
-  call init_serial
-  
-;  call output_drive_info
-
-;  push hello
-;  call puts
-
-  mov ax, 0
-  mov es, ax
-  mov bx, after
-
-  mov ah, 0x2
-  mov al, 1
-  mov ch, 0
-  mov cl, 2
-  mov dh, 0
-  pop dx
-  and dx, 0x00ff
-
-  int 0x13
-   
-  pushf
-  pop bx
-  and bx, 0x0001
-  push bx
-  push carry_flag
-
-  mov bx, ax
-  and bx, 0xff00
-  shr bx, 8
-  push bx
-  push return_code
-
-  mov bx, ax
-  and bx, 0x00ff
-  push bx
-  push sectors_read
- 
+  push hello
   call puts
-  call putx
 
-  call puts
-  call putx
-
-  call puts
-  call putx
-
-  mov bx, [after]
-  push bx
-  call putx
-
-
-times (512 - 2) - ($ - $$) db 0
-db 0x55
-db 0xaa
-; https://stackoverflow.com/a/15690134
-times 512 - ($ - $$) db 0
-after:
 times 2048 - ($ - $$) dw 0xface
