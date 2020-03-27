@@ -23,16 +23,12 @@ jmp init
 
 init:
   mov sp, 0x7c00
+
   call init_serial
   
-
   push load
   push dx
   call load_rest_of_code_into_memory
-  
-  mov bx, [main]
-  push bx
-  call putx
 
   jmp main
 
