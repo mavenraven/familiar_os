@@ -9,4 +9,4 @@ clean:
 
 .PHONY: run
 run: all
-	qemu-system-x86_64 -net nic,model=pcnet -m 4096 -drive file=$(o).img,format=raw -no-reboot -serial stdio
+	sudo qemu-system-x86_64 -net nic,model=pcnet -net tap,ifname=tap0,script=qemu-ifup.sh,downscript=no -m 4096 -drive file=$(o).img,format=raw -no-reboot -serial stdio
