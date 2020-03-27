@@ -12,6 +12,11 @@
   %include "hex_to_str.s"
 %endif
 
+%ifndef CALLING_CONVENTION
+  %define CALLING_CONVENTION
+  %include "calling_convention.s"
+%endif
+
 putx:
   prologue
   

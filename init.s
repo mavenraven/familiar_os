@@ -21,6 +21,7 @@ jmp init
   %include "load_rest_of_code_into_memory.s"
 %endif
 
+
 init:
   mov sp, 0x7c00
 
@@ -39,38 +40,11 @@ db 0xaa
 times 512 - ($ - $$) db 0
 
 load:
-  %include "string_constants.s"
 
-main:
-  push hello
-  call puts
+%ifndef MAIN
+  %define MAIN 
+  %include "main.s"
+%endif
 
-  push hello
-  call puts
-
-  push 0xec00
-  push 0xface
-  call hex_to_str
-
-  push 0xec00
-  call puts
- 
-  mov bx, sp
-  push 0xf700
-  push bx
-  call hex_to_str
-
-  push 0xf700
-  call puts
-
-  push 0xcafe
-  call putx
-
-  push 0xeeee
-  call putx
-
-  mov bx, sp
-  push bx
-  call putx
 ; https://stackoverflow.com/a/15690134
 times 1024 - ($ - $$) db 0

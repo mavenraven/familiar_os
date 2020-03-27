@@ -28,7 +28,6 @@ load_location: db 'load location: ', 0
 sectors_read: db 'sectors read: ', 0
 disk_load_return_code: db 'return code ', 0
 
-
 load_rest_of_code_into_memory:
   prologue
 
