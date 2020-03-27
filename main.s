@@ -1,15 +1,5 @@
-
-%ifndef OUTPUT_DRIVE_INFO
-  %define OUTPUT_DRIVE_INFO
-  %include "output_drive_info.s"
-%endif
-
-
 hello: db 'hello world', 0
 main:
-  push 0x80
-  call output_drive_info
-
   push hello
   call puts
 
