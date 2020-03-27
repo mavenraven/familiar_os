@@ -8,9 +8,9 @@ write_char:
   push dx
   pushfd
 
-  mov bx, sp
-  add bx, 14
-  mov bx, [bx]
+  mov bx, [esp+14]
+  mov cx, [esp+12]
+  mov [esp+14], cx
 
   mov ah, 0x0e
   mov al, bl
@@ -26,4 +26,5 @@ write_char:
   pop bx
   pop ax
 
+  add esp, 2
   ret

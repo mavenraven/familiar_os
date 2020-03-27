@@ -14,9 +14,9 @@ puts:
   push dx
   pushfd
 
-  mov bx, sp
-  add bx, 14
-  mov bx, [bx]
+  mov bx, [esp+14]
+  mov cx, [esp+12]
+  mov [esp+14], cx
   
 .while:
   mov al, [bx]
@@ -42,4 +42,5 @@ puts:
   pop bx
   pop ax
 
+  add esp, 2
   ret

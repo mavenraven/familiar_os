@@ -1,13 +1,23 @@
+; putx
+; Writes a hex value to the terminal and to serial port, with a new line.
+; parameter 1: 16 bit hex value to be printed.
+
+%ifndef WRITE_CHAR
+  %define WRITE_CHAR
+  %include "write_char.s"
+%endif
+
 putx:
   push ax
   push bx
   push cx
   push dx
+  pushfd
 
-  mov bx, sp
-  add bx, 4
-  mov bx, [bx]
-  
+  mov bx, [esp+14]
+  mov cx, [esp+12]
+  mov [esp+14], cx
+
   mov cx, 0
 .convert_nibble_loop:
   mov dx, bx
@@ -30,36 +40,22 @@ putx:
   jl .convert_nibble_loop
   mov cx, 0
 .print_loop:
-  mov ah, 0x0e
-  pop bx
-  mov al, bl
-  int 0x10
-
-  mov dx, 0
-  mov ah, 1
-  int 0x14
-
+  call write_char
   add cx, 1
   cmp cx, 4
   jl .print_loop
 
-  mov al, 0x0a
-  mov ah, 0x0e
-  int 0x10
+  push 0x0a
+  call write_char
 
-  mov al, 0x0d
-  int 0x10
+  push 0x0d
+  call write_char
 
-  mov al, 0x0a
-  mov dx, 0
-
-  mov dx, 0
-  mov ah, 1
-  int 0x14
-
+  popfd
   pop dx
   pop cx
   pop bx
   pop ax
 
+  add esp, 2
   ret
