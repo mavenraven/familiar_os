@@ -41,9 +41,9 @@
 %define param5 esp + 10 + registers_space + return_addres_space + local_space
 %define param6 esp + 12 + registers_space + return_addres_space + local_space
 
-%define local1 esp + 2
-%define local2 esp + 2
-%define local3 esp + 4
-%define local4 esp + 6
-%define local5 esp + 8
-%define local6 esp + 10
+%define local1 esp + 2  + registers_space + return_addres_space + local_space
+%define local2 esp + 4  + registers_space + return_addres_space + local_space
+%define local3 esp + 6  + registers_space + return_addres_space + local_space
+%define local4 esp + 8  + registers_space + return_addres_space + local_space
+%define local5 esp + 10 + registers_space + return_addres_space + local_space
+%define local6 esp + 12 + registers_space + return_addres_space + local_space
