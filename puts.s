@@ -1,11 +1,21 @@
-; prints a null terminated string to the terminal and to COM1 [with new line]
+; puts
+; Writes a string to the terminal and to the serial port, with a new line.
+; parameter 1: Pointer to the null terminated string to be printed.
+
+%ifndef WRITE_CHAR
+  %define WRITE_CHAR
+  %include "write_char.s"
+%endif
+
 puts:
-  push bx
   push ax
+  push bx
+  push cx
   push dx
+  pushfd
 
   mov bx, sp
-  add bx, 4
+  add bx, 14
   mov bx, [bx]
   
 .while:
@@ -13,30 +23,23 @@ puts:
   cmp al, 0x00
   je .end
 
-  mov ah, 0x0e
-  int 0x10
-
-  mov dx, 0
-  mov ah, 1
-  int 0x14
+  push ax
+  call write_char
 
   inc bx
   jmp .while
 .end:
-  mov al, 0x0a
-  mov ah, 0x0e
-  int 0x10
 
-  mov al, 0x0d
-  int 0x10
+  push 0x0a
+  call write_char
 
-  mov al, 0x0a
-  mov dx, 0
-  mov ah, 1
-  int 0x14
+  push 0x0d
+  call write_char
 
+  popfd
   pop dx
-  pop ax
+  pop cx
   pop bx
+  pop ax
 
   ret
