@@ -72,5 +72,5 @@ main:
   mov bx, sp
   push bx
   call putx
-
-times 2048 - ($ - $$) dw 0x0000
+; https://stackoverflow.com/a/15690134
+times 1024 - ($ - $$) db 0
