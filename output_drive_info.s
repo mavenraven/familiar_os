@@ -12,11 +12,18 @@
   %include "putx.s"
 %endif
 
+%ifndef PUTS
+  %define PUTS
+  %include "puts.s"
+%endif
+
+
 %ifndef CALLING_CONVENTION
   %define CALLING_CONVENTION
   %include "calling_convention.s"
 %endif
 
+drive_info: db 'DRIVE INFO', 0
 carry_flag: db 'carry flag: ', 0
 return_code: db 'return code: ', 0
 number_drives: db 'number of hard disk drives: ', 0
@@ -26,23 +33,24 @@ logical_last_sector: db 'last index of sectors: ', 0
 
 output_drive_info:
   prologue
+
+  push drive_info
+  call puts
+
   mov ah, 0x8
   mov dx, [param1]
   
   int 0x13
 
-  push cx
-  push cx
-  push cx
-  push dx
-  push dx
-  push ax
   pushf
+  push ax
+  push cx
+  push dx
   
   push carry_flag
   call print
 
-  pop bx
+  mov bx, [esp+6]
   and bx, 0x0001
   push bx
   call putx
@@ -50,7 +58,7 @@ output_drive_info:
   push return_code
   call print
 
-  pop bx
+  mov bx, [esp+4]
   and bx, 0xff00
   shr bx, 8
   push bx
@@ -59,7 +67,7 @@ output_drive_info:
   push number_drives
   call print
 
-  pop bx
+  mov bx, [esp]
   and bx, 0x00ff
   push bx
   call putx
@@ -67,7 +75,7 @@ output_drive_info:
   push logical_last_head
   call print
 
-  pop bx
+  mov bx, [esp]
   and bx, 0xff00
   shr bx, 8
   push bx
@@ -76,7 +84,7 @@ output_drive_info:
   push logical_last_sector
   call print
 
-  pop bx
+  mov bx, [esp+4]
   and bx, 0b0000000000111111
   push bx
   call putx
@@ -94,5 +102,6 @@ output_drive_info:
   push bx
   call putx
 
+  add sp, 8
   epilogue 1
   ret
