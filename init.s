@@ -2,6 +2,7 @@ org 0x7c00
 jmp init
 
 %include "putx.s"
+%include "hex_to_str.s"
 %include "puts.s"
 %include "init_serial.s"
 %include "output_drive_info.s"
@@ -37,8 +38,20 @@ load:
   %include "string_constants.s"
 
 main:
-  push hello
+  push 0xfc00
+  push 0xface
+  call hex_to_str
+
+  push 0xfc00
   call puts
+ 
+  push 0xfc00
+  push 0xace5
+  call hex_to_str
+
+  push 0xfc00
+  call puts
+
 
 
 times 2048 - ($ - $$) dw 0xface

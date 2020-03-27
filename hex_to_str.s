@@ -1,20 +1,19 @@
 ; hex_to_str
 ; Converts a 16 bit value to its hex string representation, null terminated.
-; parameter 1: Address of buffer to write string to.
-; parameter 2: 16 bit hex value to be printed.
+; parameter 2: Address of buffer to write string to.
+; parameter 1: 16 bit hex value to be printed.
 
-putx:
-  push ax
-  push bx
-  push cx
-  push dx
-  pushfd
+%ifndef CALLING_CONVENTION
+  %define CALLING_CONVENTION
+  %include "calling_convention.s"
+%endif
 
-  mov bx, [esp+16]
-  mov cx, [esp+12]
-  mov [esp+14], cx
-
+hex_to_str:
+  prologue
+  mov ax, [param2]
+  mov bx, [param1]
   mov cx, 0
+
 .convert_nibble_loop:
   mov dx, bx
   and dx, 0x000f
@@ -35,23 +34,18 @@ putx:
   cmp cx, 4
   jl .convert_nibble_loop
   mov cx, 0
-.print_loop:
-  call write_char
+  mov bx, ax
+.copy_loop:
+  pop dx
+  mov [bx], dx
+  add bx, 1
   add cx, 1
   cmp cx, 4
-  jl .print_loop
+  jl .copy_loop
 
-  push 0x0a
-  call write_char
+  ; null terminate
+  mov dx, 0
+  mov [bx], dx
 
-  push 0x0d
-  call write_char
-
-  popfd
-  pop dx
-  pop cx
-  pop bx
-  pop ax
-
-  add esp, 2
+  epilogue 2
   ret
