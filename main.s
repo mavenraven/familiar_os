@@ -1,32 +1,35 @@
+%ifndef PUTX
+  %define PUTX
+  %include "putx.s"
+%endif
+
+%ifndef PUTS
+  %define PUTS
+  %include "puts.s"
+%endif
+
 hello: db 'hello world', 0
+
 main:
-  push hello
-  call puts
-
-  push hello
-  call puts
-
-  push 0xec00
+  sub sp, 8
+  push sp
   push 0xface
   call hex_to_str
 
-  push 0xec00
+  push sp
   call puts
- 
-  mov bx, sp
-  push 0xf700
-  push bx
-  call hex_to_str
+  add sp, 8
 
-  push 0xf700
-  call puts
+  mov ah, 0xb1
+  mov al, 0x2
 
-  push 0xcafe
-  call putx
+  mov cx, 0x2000
+  mov dx, 0x1022
+  mov si, 0
+  
+  int 0x1a
 
-  push 0xeeee
-  call putx
-
-  mov bx, sp
-  push bx
+  and ax, 0xff00
+  shr ax, 8
+  push ax
   call putx
