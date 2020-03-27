@@ -7,16 +7,14 @@
   %include "write_char.s"
 %endif
 
-puts:
-  push ax
-  push bx
-  push cx
-  push dx
-  pushfd
+%ifndef CALLING_CONVENTION
+  %define CALLING_CONVENTION
+  %include "calling_convention.s"
+%endif
 
-  mov bx, [esp+14]
-  mov cx, [esp+12]
-  mov [esp+14], cx
+puts:
+  prologue
+  mov bx, [param1]
   
 .while:
   mov al, [bx]
@@ -24,8 +22,7 @@ puts:
   je .end
 
   push ax
-  call write_char
-
+  call write_char 
   inc bx
   jmp .while
 .end:
@@ -36,11 +33,5 @@ puts:
   push 0x0d
   call write_char
 
-  popfd
-  pop dx
-  pop cx
-  pop bx
-  pop ax
-
-  add esp, 2
+  epilogue 1
   ret
