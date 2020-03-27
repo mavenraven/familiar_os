@@ -1,3 +1,8 @@
+%ifndef CALLING_CONVENTION
+  %define CALLING_CONVENTION
+  %include "calling_convention.s"
+%endif
+
 org 0x7c00
 jmp init
 
@@ -37,21 +42,35 @@ load:
   %include "string_constants.s"
 
 main:
-  push 0xfc00
+  push hello
+  call puts
+
+  push hello
+  call puts
+
+  push 0xec00
   push 0xface
   call hex_to_str
 
-  push 0xfc00
+  push 0xec00
   call puts
  
-  push 0xfc00
-  push 0xace5
+  mov bx, sp
+  push 0xf700
+  push bx
   call hex_to_str
 
-  push 0xfc00
+  push 0xf700
   call puts
 
   push 0xcafe
   call putx
 
-times 2049 - ($ - $$) dw 0xface
+  push 0xeeee
+  call putx
+
+  mov bx, sp
+  push bx
+  call putx
+
+times 2049 - ($ - $$) dw 0xdddd

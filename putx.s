@@ -12,17 +12,21 @@
   %include "hex_to_str.s"
 %endif
 
-
 putx:
   prologue
   
-  push 0x90
-  mov bx, [esp + 10 + 2 + 20 + 4]
+  mov bx, [param1]
+  mov cx, bx
+
+  sub sp, 2
+  mov bx, sp
   push bx
+  push cx
   call hex_to_str
 
-  push 0x90
+  push bx
   call puts
 
+  add sp, 2
   epilogue 1
   ret
