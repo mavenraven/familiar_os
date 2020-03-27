@@ -1,34 +1,38 @@
-%ifndef CALLING_CONVENTION
-  %define CALLING_CONVENTION
-  %include "calling_convention.s"
-%endif
-
 org 0x7c00
 jmp init
 
-%include "puts.s"
-%include "putx.s"
-%include "init_serial.s"
-%include "output_drive_info.s"
+%ifndef PUTX
+  %define PUTX
+  %include "putx.s"
+%endif
+
+%ifndef PUTS
+  %define PUTS
+  %include "puts.s"
+%endif
+
+%ifndef INIT_SERIAL
+  %define INIT_SERIAL
+  %include "init_serial.s"
+%endif
+
+%ifndef LOAD_REST_OF_CODE_INTO_MEMORY
+  %define LOAD_REST_OF_CODE_INTO_MEMORY 
+  %include "load_rest_of_code_into_memory.s"
+%endif
 
 init:
   mov sp, 0x7c00
+  call init_serial
+  
 
+  push load
   push dx
-
-  mov ax, 0
-  mov es, ax
-  mov bx, load
-
-  mov ah, 0x2
-  mov al, 1
-  mov ch, 0
-  mov cl, 2
-  mov dh, 0
-  pop dx
-  and dx, 0x00ff
-
-  int 0x13
+  call load_rest_of_code_into_memory
+  
+  mov bx, [main]
+  push bx
+  call putx
 
   jmp main
 
@@ -73,4 +77,4 @@ main:
   push bx
   call putx
 
-times 2049 - ($ - $$) dw 0xdddd
+times 2048 - ($ - $$) dw 0x0000
