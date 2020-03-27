@@ -1,9 +1,8 @@
 org 0x7c00
 jmp init
 
-%include "putx.s"
-%include "hex_to_str.s"
 %include "puts.s"
+%include "putx.s"
 %include "init_serial.s"
 %include "output_drive_info.s"
 
@@ -52,6 +51,7 @@ main:
   push 0xfc00
   call puts
 
+  push 0xcafe
+  call putx
 
-
-times 2048 - ($ - $$) dw 0xface
+times 2049 - ($ - $$) dw 0xface
