@@ -40,7 +40,5 @@ main:
   push hello
   call puts
 
-  push sp
-  call putx
 
 times 2048 - ($ - $$) dw 0xface
