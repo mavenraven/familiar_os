@@ -27,3 +27,28 @@ main:
   add sp, 8
 
   call detect_pcnet_card
+
+  mov ah, 0xb1
+  mov al, 0x2
+
+  mov cx, pci_device_id
+  mov dx, pci_vendor_id
+  mov si, 0
+  
+  int 0x1a
+
+  
+  mov ah, 0xb1
+  mov al, 0x9
+  mov di, 0x0
+
+  int 0x1a
+
+  push ax
+  call putx
+   
+  pushf
+  call putx
+
+  push cx
+  call putx
