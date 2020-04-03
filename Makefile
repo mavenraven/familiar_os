@@ -1,6 +1,10 @@
 o ?= familiar_os
 
-all: $(o).img
+all: $(o).img virtualbox
+
+.PHONY: virtualbox
+virtualbox:
+	./create-virtualbox-machine.sh
 
 $(o).img: *.s
 	nasm -f bin -o $(o).img init.s
