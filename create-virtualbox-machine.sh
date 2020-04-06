@@ -17,9 +17,10 @@ VBoxManage unregistervm --delete "$1" || true
 VBoxManage createvm --name "$1" --register
 
 VBoxManage modifyvm "$1" \
-    --nic1 bridged \
+    --nic1 hostonly \
     --nictype1 Am79C970A \
-    --bridgeadapter1 "$(get_default_interface)" \
+    --hostonlyadapter1 vboxnet0 \
+    --macaddress1 facefaceface \
     --uart1 0x3F8 4 \
     --uartmode1 file "$serial_console_output" \
     --bioslogodisplaytime 1
