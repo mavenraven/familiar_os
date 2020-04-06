@@ -16,6 +16,10 @@
   %include "pci_constants.s"
 %endif
 
+%ifndef PCNET_CONSTANTS
+  %define PCNET_CONSTANTS
+  %include "pcnet_constants.s"
+%endif
 
 pcnet_card_detected: db 'PCnet Am79C970A detected!', 0
 pcnet_card_not_detected: db 'PCnet Am79C970A NOT detected.', 0
@@ -23,18 +27,18 @@ pcnet_card_not_detected: db 'PCnet Am79C970A NOT detected.', 0
 detect_pcnet_card:
   prologue
 
-  mov ah, PCI_FUNCTION_ID
-  mov al, FIND_PCI_DEVICE
+  mov ah, PCI.PCI_FUNCTION_ID
+  mov al, PCI.FIND_PCI_DEVICE
 
-  mov cx, PCNET_PCI_DEVICE_ID
-  mov dx, PCNET_PCI_VENDOR_ID
+  mov cx, PCNET.PCI_CONFIGURATION_REGISTERS.DEFAULTS.PCI_DEVICE_ID
+  mov dx, PCNET.PCI_CONFIGURATION_REGISTERS.DEFAULTS.PCI_VENDOR_ID
   mov si, 0
   
   int 0x1a
 
   and ax, 0xff00
   shr ax, 8
-  cmp ax, PCI_FUNCTION_SUCCESSFUL
+  cmp ax, PCI.FUNCTION_SUCCESSFUL
   jz .success
   jnz .failure
 

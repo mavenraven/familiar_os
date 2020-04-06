@@ -17,6 +17,12 @@
   %include "pci_constants.s"
 %endif
 
+%ifndef PCNET_CONSTANTS
+  %define PCNET_CONSTANTS
+  %include "pcnet_constants.s"
+%endif
+
+
 hello: db 'hello world', 0
 
 main:
@@ -31,18 +37,18 @@ main:
 
   call detect_pcnet_card
 
-  mov ah, PCI_FUNCTION_ID
-  mov al, FIND_PCI_DEVICE
+  mov ah, PCI.PCI_FUNCTION_ID
+  mov al, PCI.FIND_PCI_DEVICE
 
-  mov cx, PCNET_PCI_DEVICE_ID
-  mov dx, PCNET_PCI_VENDOR_ID
+  mov cx, PCNET.PCI_CONFIGURATION_REGISTERS.DEFAULTS.PCI_DEVICE_ID
+  mov dx, PCNET.PCI_CONFIGURATION_REGISTERS.DEFAULTS.PCI_VENDOR_ID
   mov si, 0
   
   int 0x1a
 
   
-  mov ah, PCI_FUNCTION_ID
-  mov al, READ_CONFIG_WORD
+  mov ah, PCI.PCI_FUNCTION_ID
+  mov al, PCI.READ_CONFIG_WORD
   mov di, 0x0
 
   int 0x1a
