@@ -1,0 +1,29 @@
+;See pci_bios_21.pdf, page 23
+%define PCI_FUNCTION_ID 0xb1
+%define PCI_BIOS_PRESENT 0x1
+%define FIND_PCI_DEVICE 0x2
+%define FIND_PCI_CLASS_CODE 0x3
+%define GENERATE_SPECIAL_CYCLE 0x6
+%define READ_CONFIG_BYTE 0x8
+%define READ_CONFIG_WORD 0x9
+%define READ_CONFIG_DWORD 0xa
+%define WRITE_CONFIG_BYTE 0xb
+%define WRITE_CONFIG_WORD 0xc
+%define WRITE_CONFIG_DWORD 0xd
+%define GET_IRQ_ROUTING_OPTIONS 0xe
+%define SET_PCI_IRQ 0xf
+
+;See pci_bios_21.pdf, page 24
+%define PCI_FUNCTION_SUCCESSFUL 0x00
+%define FUNC_NOT_SUPPORTED 0x81
+%define BAD_VENDOR_ID 0x83
+%define DEVICE_NOT_FOUND 0x86
+%define BAD_REGISTER_NUMBER 0x87
+%define SET_FAILED 0x88
+%define BUFFER_TOO_SMALL 0x89
+
+
+;See am79c970a.pdf, page 169
+%define PCNET_PCI_VENDOR_ID 0x1022
+%define PCNET_PCI_DEVICE_ID 0x2000
+

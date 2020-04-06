@@ -1,6 +1,5 @@
 %ifndef PUTX
-  %define PUTX
-  %include "putx.s"
+  %define PUTX %include "putx.s"
 %endif
 
 %ifndef PUTS
@@ -13,6 +12,10 @@
   %include "detect_pcnet_card.s"
 %endif
 
+%ifndef PCI_CONSTANTS
+  %define PCI_CONSTANTS
+  %include "pci_constants.s"
+%endif
 
 hello: db 'hello world', 0
 
@@ -28,18 +31,18 @@ main:
 
   call detect_pcnet_card
 
-  mov ah, 0xb1
-  mov al, 0x2
+  mov ah, PCI_FUNCTION_ID
+  mov al, FIND_PCI_DEVICE
 
-  mov cx, pci_device_id
-  mov dx, pci_vendor_id
+  mov cx, PCNET_PCI_DEVICE_ID
+  mov dx, PCNET_PCI_VENDOR_ID
   mov si, 0
   
   int 0x1a
 
   
-  mov ah, 0xb1
-  mov al, 0x9
+  mov ah, PCI_FUNCTION_ID
+  mov al, READ_CONFIG_WORD
   mov di, 0x0
 
   int 0x1a
@@ -52,3 +55,12 @@ main:
 
   push cx
   call putx
+
+
+
+; PCI I/O Base Address or Memory Mapped I/O Base Address register
+; PCI Expansion ROM Base Address register
+; PCI Interrupt Line register
+; PCI Latency Timer register
+; PCI Status register
+; PCI Command register

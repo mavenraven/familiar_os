@@ -11,9 +11,11 @@
   %include "calling_convention.s"
 %endif
 
-;See https://stuff.mit.edu/afs/sipb/contrib/doc/specs/ic/network/am79c970a.pdf, page 169
-%define pci_vendor_id 0x1022
-%define pci_device_id 0x2000
+%ifndef PCI_CONSTANTS
+  %define PCI_CONSTANTS
+  %include "pci_constants.s"
+%endif
+
 
 pcnet_card_detected: db 'PCnet Am79C970A detected!', 0
 pcnet_card_not_detected: db 'PCnet Am79C970A NOT detected.', 0
@@ -21,18 +23,18 @@ pcnet_card_not_detected: db 'PCnet Am79C970A NOT detected.', 0
 detect_pcnet_card:
   prologue
 
-  mov ah, 0xb1
-  mov al, 0x2
+  mov ah, PCI_FUNCTION_ID
+  mov al, FIND_PCI_DEVICE
 
-  mov cx, pci_device_id
-  mov dx, pci_vendor_id
+  mov cx, PCNET_PCI_DEVICE_ID
+  mov dx, PCNET_PCI_VENDOR_ID
   mov si, 0
   
   int 0x1a
 
   and ax, 0xff00
   shr ax, 8
-  cmp ax, 0
+  cmp ax, PCI_FUNCTION_SUCCESSFUL
   jz .success
   jnz .failure
 
