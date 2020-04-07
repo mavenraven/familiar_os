@@ -37,6 +37,25 @@ main:
 
   call detect_pcnet_card
 
+;set address
+  mov ah, PCI.PCI_FUNCTION_ID
+  mov al, PCI.FIND_PCI_DEVICE
+
+  mov cx, PCNET.PCI_CONFIGURATION_REGISTERS.PCI_DEVICE_ID.DEFAULT
+  mov dx, PCNET.PCI_CONFIGURATION_REGISTERS.PCI_VENDOR_ID.DEFAULT
+  mov si, 0
+  
+  int 0x1a
+  
+  mov ah, PCI.PCI_FUNCTION_ID
+  mov al, PCI.WRITE_CONFIG_WORD
+  mov di, PCNET.PCI_CONFIGURATION_REGISTERS.PCI_MEMORY_MAPPED_IO_BASE_ADDRESS.OFFSET
+  mov eax, 0x8000 ; arbitary, 2 sectors past 0x7c00
+  shl eax, 5
+
+  int 0x1a
+
+;set memem
   mov ah, PCI.PCI_FUNCTION_ID
   mov al, PCI.FIND_PCI_DEVICE
 
@@ -48,25 +67,12 @@ main:
 
   
   mov ah, PCI.PCI_FUNCTION_ID
-  mov al, PCI.READ_CONFIG_WORD
-  mov di, 0x0
+  mov al, PCI.WRITE_CONFIG_WORD
+  mov di, PCNET.PCI_CONFIGURATION_REGISTERS.PCI_COMMAND.OFFSET
+  mov cx, PCNET.PCI_CONFIGURATION_REGISTERS.PCI_COMMAND.MEMEM
 
   int 0x1a
 
+  mov ax, [0x800]
   push ax
   call putx
-   
-  pushf
-  call putx
-
-  push cx
-  call putx
-
-
-
-; PCI I/O Base Address or Memory Mapped I/O Base Address register
-; PCI Expansion ROM Base Address register
-; PCI Interrupt Line register
-; PCI Latency Timer register
-; PCI Status register
-; PCI Command register
