@@ -73,6 +73,8 @@ main:
 
   int 0x1a
 
-  mov ax, [0x800]
+please_work:
+  mov ax, [0x8000]
   push ax
   call putx
+  jmp please_work
