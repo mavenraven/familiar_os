@@ -1,3 +1,9 @@
+building
+========
+1. Install `nasm`.
+1. Install `VirtualBox`.
+1. Run `make`.
 
-
-do this: https://blog.san-ss.com.ar/2016/04/setup-nat-network-for-qemu-macosx
+running
+=======
+Run `make run`.
