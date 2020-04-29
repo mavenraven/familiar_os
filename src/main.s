@@ -72,9 +72,3 @@ main:
   mov cx, PCNET.PCI_CONFIGURATION_REGISTERS.PCI_COMMAND.MEMEM
 
   int 0x1a
-
-please_work:
-  mov ax, [0x8000]
-  push ax
-  call putx
-  jmp please_work
