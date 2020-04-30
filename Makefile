@@ -10,5 +10,8 @@ clean:
 
 .PHONY: run
 run: all
-	./create-virtualbox-machine.sh $(o)
+	./run-virtualbox-machine.sh $(o)
 
+.PHONY: debug
+debug: all
+	./debug-virtualbox-machine.sh $(o)
