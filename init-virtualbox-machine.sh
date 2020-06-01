@@ -23,7 +23,8 @@ VBoxManage modifyvm "$1" \
     --macaddress1 facefaceface \
     --uart1 0x3F8 4 \
     --uartmode1 file "$serial_console_output" \
-    --bioslogodisplaytime 1
+    --bioslogodisplaytime 1 \
+    --memory 4
 
 
 VBoxManage storagectl "$1" \
