@@ -12,8 +12,10 @@ VBoxManage controlvm "$1" poweroff || true
 rm "$serial_console_output" || true
 
 VBoxManage unregistervm --delete "$1" || true
+VBoxManage hostonlyif remove vboxnet0 || true
 
 
+VBoxManage hostonlyif create
 VBoxManage createvm --name "$1" --register
 
 VBoxManage modifyvm "$1" \
