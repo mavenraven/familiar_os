@@ -10,8 +10,4 @@ clean:
 
 .PHONY: run
 run: all
-	./run-virtualbox-machine.sh $(o)
-
-.PHONY: debug
-debug: all
-	./debug-virtualbox-machine.sh $(o)
+	./run-qemu.sh $(o).img
