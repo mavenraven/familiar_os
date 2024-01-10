@@ -2,3 +2,4 @@
 *.swp
 console_output
 *.log
+segv.entitlements
