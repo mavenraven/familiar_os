@@ -7,9 +7,9 @@
   %include "puts.s"
 %endif
 
-%ifndef DETECT_PCNET_CARD
-  %define DETECT_PCNET_CARD
-  %include "detect_pcnet_card.s"
+%ifndef DETECT_RTL_CARD
+  %define DETECT_RTL_CARD
+  %include "detect_rtl_card.s"
 %endif
 
 %ifndef PCI_CONSTANTS
@@ -35,7 +35,7 @@ main:
   call puts
   add sp, 8
 
-  call detect_pcnet_card
+  call detect_rtl_card
 
 ;set address
   mov ah, PCI.PCI_FUNCTION_ID
