@@ -51,14 +51,14 @@ detect_rtl_card:
   push bus_number
   call print
 
-  mov bx, 0
+  and bx, 0xff00
   push bx
-  call puts
+  call putx
 
   epilogue 0
   ret
 
-.failure:
+.failure
   push rtl_card_not_detected
   call puts
   epilogue 0
