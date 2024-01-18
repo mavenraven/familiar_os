@@ -24,7 +24,7 @@
 rtl_card_detected: db 'RTL8139 detected!', 0
 rtl_card_not_detected: db 'RTL8139 NOT detected.', 0
 
-bus_number: db 'bus number: ', 0
+device_number: db 'device number: ', 0
 
 
 detect_rtl_card:
@@ -48,9 +48,10 @@ detect_rtl_card:
 .success:
   push rtl_card_detected
   call puts
-  push bus_number
+  push device_number
   call print
 
+  shr bl, 4
   and bx, 0xff00
   push bx
   call putx
