@@ -24,6 +24,9 @@
 rtl_card_detected: db 'RTL8139 detected!', 0
 rtl_card_not_detected: db 'RTL8139 NOT detected.', 0
 
+bus_number: db 'bus number: ', 0
+
+
 detect_rtl_card:
   prologue
 
@@ -42,13 +45,20 @@ detect_rtl_card:
   jz .success
   jnz .failure
 
-.success
+.success:
   push rtl_card_detected
   call puts
+  push bus_number
+  call print
+
+  mov bx, 0
+  push bx
+  call puts
+
   epilogue 0
   ret
 
-.failure
+.failure:
   push rtl_card_not_detected
   call puts
   epilogue 0
