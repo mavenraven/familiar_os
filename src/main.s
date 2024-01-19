@@ -102,6 +102,12 @@ main:
   ; the low 2 bits are reserved.
 
   and cx, 0xFFFC
+  ; save some  extra io base addr treats for later
+  push cx
+  push cx
+  push cx
+  push cx
+
   push cx
   call putx
 
@@ -114,3 +120,11 @@ main:
   in ax, dx
   push ax
   call putx
+
+  pop cx
+  add cx, 0x0052
+  mov dx, cx
+  in ax, dx
+
+
+  
