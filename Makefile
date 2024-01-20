@@ -38,11 +38,11 @@ build/final_product.img: build/mbr.img build/unikernel_stripped.img
 # with reordering the functions.
 	cat build/mbr.img build/unikernel_stripped.img > build/final_product.img
 
+.PHONY: clean
 clean:
 	rm -rf build/*
 
-.PHONY: run-osx
-run-osx: all
+run-osx: build/final_product.img
 # If you have your own source tree of QEMU in your home directory, this will pick up the binaries
 # for you automatically.
 	PATH="${HOME}/qemu/build:${PATH}" ./scripts/run-qemu-osx.sh build/final_product.img
