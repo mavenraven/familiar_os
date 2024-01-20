@@ -1,0 +1,17 @@
+0000000100003f80 <_write_char>:
+100003f80: 55                           pushq   %rbp
+100003f81: 48 89 e5                     movq    %rsp, %rbp
+100003f84: 40 88 f8                     movb    %dil, %al
+100003f87: 88 45 ff                     movb    %al, -1(%rbp)
+100003f8a: 8a 45 ff                     movb    -1(%rbp), %al
+100003f8d: b4 0e                        movb    $14, %ah
+100003f8f: b0 47                        movb    $71, %al
+100003f91: cd 10                        int     $16
+100003f93: 8a 45 ff                     movb    -1(%rbp), %al
+100003f96: 66 ba 00 00                  movw    $0, %dx
+100003f9a: b0 49                        movb    $73, %al
+100003f9c: b4 01                        movb    $1, %ah
+100003f9e: cd 14                        int     $20
+100003fa0: 31 c0                        xorl    %eax, %eax
+100003fa2: 5d                           popq    %rbp
+100003fa3: c3                           retq
