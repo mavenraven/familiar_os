@@ -1,10 +1,20 @@
 all: build/final_product.img
+build_image_name=familiar_os_build_image
 
-build/mbr.img: src/mbr/*
-	mkdir -p build
+build/shellcheck_marker:scripts/*
+	shellcheck scripts/*
+	
+build/build_image_marker: Dockerfile
+	docker build -t ${build_image_name} .
+	touch build/build_image_marker
+
+build/mbr.img: src/mbr/* build/build_image_marker
 	cd src/mbr && nasm -f bin -o ../../build/mbr.img init.s
-build/unikernel.o: src/unikernel/*
-	mkdir -p build
+
+build/unikernel.o: src/unikernel/* build/build_image_marker scripts/run-build-container.sh build/shellcheck_marker
+	./scripts/run-build-container.sh ${build_image_name} ls /src/unikernel
+	./scripts/run-build-container.sh ${build_image_name} gcc -Os -m16 -march=i386 -ffreestanding -nostdlib /src/unikernel/main.c -o /build/hello
+	docker run --rm -v "${PWD}/src/unikernel:/src/unikernel" -v "${PWD}/build:/build" ${build_image_name} gcc --version
 	cd src/unikernel && clang -ffreestanding -nostdlib -arch x86_64 main.c bios/write_char.c -o ../../build/unikernel.o
 
 build/unikernel_stripped.img: build/unikernel.o
@@ -42,7 +52,7 @@ build/final_product.img: build/mbr.img build/unikernel_stripped.img
 clean:
 	rm -rf build/*
 
-run-osx: build/final_product.img
+run: build/final_product.img scripts/run-qemu.sh
 # If you have your own source tree of QEMU in your home directory, this will pick up the binaries
 # for you automatically.
-	PATH="${HOME}/qemu/build:${PATH}" ./scripts/run-qemu-osx.sh build/final_product.img
+	PATH="${HOME}/qemu/build:${PATH}" ./scripts/run-qemu.sh build/final_product.img
