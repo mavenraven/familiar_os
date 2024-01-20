@@ -52,7 +52,7 @@ load_rest_of_code_into_memory:
 
 
   mov ah, 0x2
-  mov al, 1 ; This will need to be adjusted as our program gets bigger.
+  mov al, 2 ; This will need to be adjusted as our program gets bigger.
   mov ch, 0
   mov cl, 2 
   mov dh, 0
