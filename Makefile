@@ -1,17 +1,17 @@
-all: unikernel
+all: build/unikernel.img
 
-bootloader: src/asm/*.s
+build/boot.img: src/asm/*.s
 	mkdir -p build
 	cd src/asm && nasm -f bin -o ../../build/boot.img init.s
 
-postboot: src/c/*.c
+build/post_boot.o: src/c/*.c
 	mkdir -p build
 	cd src/c && clang -ffreestanding -nostdlib *.c  -arch x86_64 -o ../../build/post_boot.o
 
-post_boot_stripped:build/post_boot.o
+build/post_boot_stripped.img: build/post_boot.o
 	cd build && objcopy --remove-section '__TEXT.__unwind_info' -O binary post_boot.o post_boot_stripped.img
 
-unikernel:build/boot.img,build/post_boot_stripped.img
+build/unikernel.img: build/boot.img build/post_boot_stripped.img
 	# This is super hacky, but it works at least on OS X.
 	# The linker man page has this to say:
 	#
