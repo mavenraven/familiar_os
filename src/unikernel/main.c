@@ -1,8 +1,12 @@
 #include "bios/write_char.h"
 
 int main(void) {
-	write_char(0x69);
-	write_char(0x69);
-	write_char(0x69);
+	write_char('a');
+	write_char('b');
+	write_char('c');
+	write_char('c');
+	write_char('c');
+	write_char('c');
+	write_char('c');
 	return 0;
 }
