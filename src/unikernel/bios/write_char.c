@@ -1,12 +1,16 @@
 int write_char(int character) {
-   asm("mov $0x0E, %ah");
-   asm("mov $0x64, %al");
-   asm("int $0x10");
+	__asm__(
+		"mov $0x0E, %ah\n"
+		"mov $0x64, %al\n"
+		"int $0x10\n"
+	);
 
-   asm("mov $0x0, %dx");
-   asm("mov $0x64, %al");
-   asm("mov $0x01, %ah");
-   asm("int $0x14");
-  
+	__asm__(
+		"mov $0x0, %dx\n"
+		"mov $0x64, %al\n"
+		"mov $0x01, %ah\n"
+		"int $0x14\n"
+	);
+
    return 0;
 }
