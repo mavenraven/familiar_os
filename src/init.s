@@ -31,18 +31,10 @@ init:
   push dx
   call load_rest_of_code_into_memory
 
-  jmp main
+  jmp load
 
 times (512 - 2) - ($ - $$) db 0
 db 0x55
 db 0xaa
 
 load:
-
-%ifndef MAIN
-  %define MAIN 
-  %include "main.s"
-%endif
-
-; https://stackoverflow.com/a/15690134
-times 1024 - ($ - $$) db 0
