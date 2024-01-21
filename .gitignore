@@ -5,4 +5,3 @@ console_output
 segv.entitlements
 tags
 build/*
-a.out
