@@ -13,7 +13,6 @@ RUN apt-get install -y bison
 RUN apt-get install -y flex
 RUN apt-get install -y info
 RUN apt-get install -y libmpc-dev
-RUN apt-get install -y vim
 
 COPY bin/gcc-5.2.0.tar.bz2 /i386/gcc-5.2.0.tar.bz2
 COPY bin/binutils-2.25.1.tar.bz2 /i386/binutils-2.25.1.tar.bz2
@@ -55,10 +54,8 @@ RUN cd /i386/gcc-5.2.0 && patch gcc/reload1.c 0002-c17-boolean-fix.patch
 #cfns.gperf:326:36: warning: ISO C++17 does not allow 'register' storage class specifier [-Wregister]
 #cfns.gperf: At global scope:
 #cfns.gperf:26:14: warning: inline function 'const char* libc_name_p(const char*, unsigned int)' used but never defined
-#
-# Got from here: https://stackoverflow.com/a/41213927
-# Had to remove the changelog to get it to apply cleanly
 COPY bin/0003-2016-02-19-Jakub-Jelinek-jakub-redhat.com.patch /i386/gcc-5.2.0/0003-2016-02-19-Jakub-Jelinek-jakub-redhat.com.patch
+
 RUN cd /i386/gcc-5.2.0 && patch -p1 < 0003-2016-02-19-Jakub-Jelinek-jakub-redhat.com.patch
 
 #RUN cd /i386/gcc-5.2.0 && make

@@ -20,6 +20,23 @@ git-svn-id: svn+ssh://gcc.gnu.org/svn/gcc/trunk@233572 138bc75d-0d04-0410-961f-8
  gcc/cp/except.c     |  3 ++-
  5 files changed, 28 insertions(+), 37 deletions(-)
 
+diff --git a/gcc/cp/ChangeLog b/gcc/cp/ChangeLog
+index a80abb57b26..571c4168bd2 100644
+--- a/gcc/cp/ChangeLog
++++ b/gcc/cp/ChangeLog
+@@ -1,3 +1,12 @@
++2016-02-19  Jakub Jelinek  <jakub@redhat.com>
++	    Bernd Edlinger  <bernd.edlinger@hotmail.de>
++
++	* Make-lang.in: Invoke gperf with -L C++.
++	* cfns.gperf: Remove prototypes for hash and libc_name_p
++	inlines.
++	* cfns.h: Regenerated.
++	* except.c (nothrow_libfn_p): Adjust.
++
+ 2016-02-19  Jakub Jelinek  <jakub@redhat.com>
+ 
+ 	PR c++/69850
 diff --git a/gcc/cp/Make-lang.in b/gcc/cp/Make-lang.in
 index 671ce12f216..2286c64a8fb 100644
 --- a/gcc/cp/Make-lang.in
