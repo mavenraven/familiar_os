@@ -1,6 +1,6 @@
 ; This needs to match the number of registers saved on the stack during
 ; the prologue.
-%define number_of_registers 5
+%define number_of_registers 6
 
 %define registers_space number_of_registers * 2
 %define return_address_space 2
@@ -10,6 +10,7 @@
   push bx
   push cx
   push dx
+  push ds
   pushfd
 %endmacro
 
@@ -23,6 +24,7 @@
   mov     [esp + registers_space + return_address_space + (%1 * 2)], cx
 
   popfd
+  pop ds
   pop dx
   pop cx
   pop bx

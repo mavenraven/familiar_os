@@ -9,19 +9,13 @@
 %endif
 
 puts_vga:
-  push ax
-  push ds
-  push di
-  push bx
+  prologue
 
   mov ax, 0xB800
   mov ds, ax
-  mov di, 0x0778
+  mov di, 0x00
   mov bx, 0xFF30
   mov [ds:di], bx
 
-  pop bx
-  pop di
-  pop ds
-  pop ax
+  epilogue 0
   ret

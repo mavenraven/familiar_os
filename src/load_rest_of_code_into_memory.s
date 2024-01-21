@@ -24,7 +24,7 @@
 %endif
 
 drive: db 'drive: ', 0
-load_location: db 'load location: ', 0
+load_location: db 'load loc: ', 0
 sectors_read: db 'sectors read: ', 0
 disk_load_return_code: db 'return code ', 0
 
