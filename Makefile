@@ -45,4 +45,4 @@ clean:
 run-osx: all
 # If you have your own source tree of QEMU in your home directory, this will pick up the binaries
 # for you automatically.
-	PATH="${HOME}/qemu/build:${PATH}" ./scripts/run-qemu-osx.sh build/unikernel.img
+	PATH="${HOME}/qemu/build:${PATH}" ./run-qemu-osx.sh build/unikernel.img
