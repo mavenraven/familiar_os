@@ -5,5 +5,8 @@ int main(void) {
 	write_char('b');
 	write_char('c');
 	write_char('c');
+	write_char('c');
+	write_char('c');
+	write_char('c');
 	return 0;
 }
