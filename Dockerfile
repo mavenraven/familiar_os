@@ -43,7 +43,7 @@ RUN cp /i386/gcc-5.2.0/gcc/reload1.c /reload1.c
 #  470 |       spill_indirect_levels++;
 #      |       ^~~~~~~~~~~~~~~~~~~~~
 COPY bin/0002-c17-boolean-fix.patch /i386/gcc-5.2.0/0002-c17-boolean-fix.patch
-RUN cd /i386/gcc-5.2.0 && patch gcc/reload1.c 0002-c17-boolean-fix.patch
+RUN cd /i386/gcc-5.2.0 && patch -p1 < 0002-c17-boolean-fix.patch
 
 
 #RUN cd /i386/gcc-5.2.0 && make
