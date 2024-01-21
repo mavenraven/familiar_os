@@ -31,4 +31,19 @@ RUN cp /i386/gcc-5.2.0/gcc/wide-int.h /wide-int.h
 COPY bin/0001-Remove-double-tempate-declarations-in-wide-int.h.patch /i386/gcc-5.2.0/0001-Remove-double-tempate-declarations-in-wide-int.h.patch
 RUN cd /i386/gcc-5.2.0 && patch -p1 < 0001-Remove-double-tempate-declarations-in-wide-int.h.patch
 
+# save a copy of the file to be patched for debugging purposes
+RUN cp /i386/gcc-5.2.0/gcc/reload1.c /reload1.c
+# Needed because of this: 
+#
+#../.././gcc/reload1.c: In function 'void init_reload()':
+#../.././gcc/reload1.c:115:24: error: use of an operand of type 'bool' in 'operator++' is forbidden in C++17
+#  115 |   (this_target_reload->x_spill_indirect_levels)
+#      |   ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~
+#../.././gcc/reload1.c:470:7: note: in expansion of macro 'spill_indirect_levels'
+#  470 |       spill_indirect_levels++;
+#      |       ^~~~~~~~~~~~~~~~~~~~~
+COPY bin/0002-c17-boolean-fix.patch /i386/gcc-5.2.0/0002-c17-boolean-fix.patch
+RUN cd /i386/gcc-5.2.0 && patch -p1 < 0002-c17-boolean-fix.patch
+
+
 #RUN cd /i386/gcc-5.2.0 && make
