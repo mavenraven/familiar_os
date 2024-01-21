@@ -5,7 +5,7 @@ build/mbr.img: src/mbr/*
 	cd src/mbr && nasm -f bin -o ../../build/mbr.img init.s
 build/unikernel.o: src/unikernel/*
 	mkdir -p build
-	cd src/unikernel && clang -ffreestanding -nostdlib -arch x86_64 main.c bios/write_char.c -o ../../build/unikernel.o
+	cd src/unikernel && clang -ffreestanding -nostdlib *.c  -arch x86_64 -o ../../build/unikernel.o
 
 build/unikernel_stripped.img: build/unikernel.o
 #homebrew doesn't put objcopy on the path. 
