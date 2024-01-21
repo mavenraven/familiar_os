@@ -1,18 +1,16 @@
 o ?= familiar_os
 
-all: $(o).img
+all: build/$(o).img
 
-
-$(o).img: src/*.s
+build/$(o).img: src/*.s
+	mkdir -p build
 	cd src && nasm -f bin -o ../$(o).img init.s
+
+.PHONY: clean
 clean:
-	rm -rf $(o).img
+	rm -rf build/$(o).img
 
-.PHONY: run-osx
-run-osx: all
-	./run-qemu-osx.sh $(o).img
-
-.PHONY: run-osx-coredump
-run-osx-coredump: all
-	./setup-qemu-for-osx-core-dumps.sh
-	./run-qemu-osx-coredump.sh $(o).img
+.PHONY: run
+run: all
+	
+	./run-qemu.sh $(o).img
