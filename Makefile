@@ -4,7 +4,7 @@ all: build/$(o).img
 
 build/$(o).img: src/*.s
 	mkdir -p build
-	cd src && nasm -f bin -o ../$(o).img init.s
+	cd src && nasm -f bin -o ../build/$(o).img init.s
 
 .PHONY: clean
 clean:
@@ -12,5 +12,4 @@ clean:
 
 .PHONY: run
 run: all
-	
-	./run-qemu.sh $(o).img
+	PATH="${HOME}/qemu/build:${PATH}" ./scripts/run-qemu.sh build/$(o).img
