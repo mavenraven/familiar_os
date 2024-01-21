@@ -36,6 +36,8 @@ init:
 times (512 - 2) - ($ - $$) db 0
 db 0x55
 db 0xaa
+; https://stackoverflow.com/a/15690134
+times 512 - ($ - $$) db 0
 
 load:
 
