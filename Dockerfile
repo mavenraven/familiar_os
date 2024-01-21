@@ -45,17 +45,5 @@ RUN cp /i386/gcc-5.2.0/gcc/reload1.c /reload1.c
 COPY bin/0002-c17-boolean-fix.patch /i386/gcc-5.2.0/0002-c17-boolean-fix.patch
 RUN cd /i386/gcc-5.2.0 && patch gcc/reload1.c 0002-c17-boolean-fix.patch
 
-# Needed because of this: 
-#cfns.gperf:101:1: error: 'const char* libc_name_p(const char*, unsigned int)' redeclared inline with 'gnu_inline' attribute
-#cfns.gperf:26:14: note: 'const char* libc_name_p(const char*, unsigned int)' previously declared here
-#cfns.gperf: In function 'const char* libc_name_p(const char*, unsigned int)':
-#cfns.gperf:318:20: warning: ISO C++17 does not allow 'register' storage class specifier [-Wregister]
-#cfns.gperf:322:24: warning: ISO C++17 does not allow 'register' storage class specifier [-Wregister]
-#cfns.gperf:326:36: warning: ISO C++17 does not allow 'register' storage class specifier [-Wregister]
-#cfns.gperf: At global scope:
-#cfns.gperf:26:14: warning: inline function 'const char* libc_name_p(const char*, unsigned int)' used but never defined
-COPY bin/0003-2016-02-19-Jakub-Jelinek-jakub-redhat.com.patch /i386/gcc-5.2.0/0003-2016-02-19-Jakub-Jelinek-jakub-redhat.com.patch
-
-RUN cd /i386/gcc-5.2.0 && patch -p1 < 0003-2016-02-19-Jakub-Jelinek-jakub-redhat.com.patch
 
 #RUN cd /i386/gcc-5.2.0 && make
