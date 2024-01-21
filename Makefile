@@ -28,15 +28,6 @@ build/unikernel.img: build/boot.img build/post_boot_stripped.img
 #
 # You can verify this by running objdump -D on the unikernal, and checking the order
 # of the symbols. If main isn't first, that's why nothing is working.
-# 
-# So why not just use a section directive either in the c code, or write the 
-# the bootloader in AT&T syntax? The problem is the LLVM assembler has this:
-#
-# https://github.com/llvm/llvm-project/blob/02232307ce18c095ef0bf26b5cef23e4efbc1e4b/llvm/lib/MC/MCParser/DarwinAsmParser.cpp#L672-L675
-#
-# If I add a comma in the directive, it works as expected, but that actually makes the project
-# MORE platform dependent than just depending on whatever linker we use doesn't do weird things
-# with reordering the functions.
 	cat build/boot.img build/post_boot_stripped.img > build/unikernel.img
 
 clean:
