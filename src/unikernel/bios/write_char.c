@@ -1,17 +1,12 @@
 int write_char(char character) {
-   asm("mov $0x0E, %ah");
-   asm("mov $0x46, %al");
-   asm("int $0x10");
-
-/*
 	__asm__(
-		"mov $0x0E, %ah\n"
-		"movb $0x46, %al\n"
+		"mov $0x0E, %%ah\n"
+		"movb $0x46, %%al\n"
 		"int $0x10\n"
 
-//		: 
-//		: //"r"(character)
-//		: // "%ah", "%al"
+		: 
+		: "r"(character)
+		: "%ah", "%al"
 	);
 
 	__asm__(
@@ -22,9 +17,8 @@ int write_char(char character) {
 
 		: 
 		: "r"(character)
-		: // "%dx", "%al", "%ah"
+		: "%dx", "%al", "%ah"
 	);
-*/
 
    return 0;
 }
