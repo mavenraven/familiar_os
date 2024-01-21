@@ -1,10 +1,13 @@
 %ifndef PUTX
   %define PUTX %include "putx.s"
 %endif
-
-%ifndef PUTS
-  %define PUTS
+%ifndef PUTS %define PUTS
   %include "puts.s"
+%endif
+
+%ifndef PUTS_VGA
+  %define PUTS_VGA
+  %include "puts_vga.s"
 %endif
 
 %ifndef DETECT_RTL_CARD
