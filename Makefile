@@ -1,17 +1,18 @@
-all: unikernel
+o ?= familiar_os
+
+all: boot.img,
+
 
 bootloader: src/asm/*.s
 	mkdir -p build
 	cd src/asm && nasm -f bin -o ../../build/boot.img init.s
 
-post_boot: src/c/*.c:
+unikernal: src/c/*.c:
 	mkdir -p build
-	cd src/c && clang -ffreestanding -nostdlib *.c  -arch x86_64 -o ../../build/post_boot.o
+	cd src/c && nasm -f bin -o ../../build/boot.img init.s
 
-post_boot_stripped:build/post_boot.o
-	cd build && objcopy --remove-section '__TEXT.__unwind_info' -O binary post_boot.o post_boot_stripped.img
 
-unikernel:build/boot.img,build/post_boot_stripped.img
+link: build/*:
      # This is super hacky, but it works at least on OS X.
      # The linker man page has this to say:
      #
@@ -27,11 +28,19 @@ unikernel:build/boot.img,build/post_boot_stripped.img
      #
      # You can verify this by running objdump -D on the unikernal, and checking the order
      # of the symbols. If main isn't first, that's why nothing is working.
-     cat build/boot.img build/post_boot_stripped.img > unikernel.img
+     
+
+
+
 
 clean:
-	rm -rf build/*
+	rm -rf $(o).img
 
 .PHONY: run-osx
 run-osx: all
-	./run-qemu-osx.sh build/unikernel.img
+	./run-qemu-osx.sh $(o).img
+
+.PHONY: run-osx-coredump
+run-osx-coredump: all
+	./setup-qemu-for-osx-core-dumps.sh
+	./run-qemu-osx-coredump.sh $(o).img
