@@ -1,17 +1,17 @@
-all: build/final_product.img
+all: build/unikernel.img
 
-build/mbr.img: src/mbr/*
+build/boot.img: src/asm/*.s
 	mkdir -p build
-	cd src/mbr && nasm -f bin -o ../../build/mbr.img init.s
-build/unikernel.o: src/unikernel/*
+	cd src/asm && nasm -f bin -o ../../build/boot.img init.s
+build/post_boot.o: src/c/*.c
 	mkdir -p build
-	cd src/unikernel && clang -ffreestanding -nostdlib *.c  -arch x86_64 -o ../../build/unikernel.o
+	cd src/c && clang -ffreestanding -nostdlib *.c  -arch x86_64 -o ../../build/post_boot.o
 
-build/unikernel_stripped.img: build/unikernel.o
+build/post_boot_stripped.img: build/post_boot.o
 #homebrew doesn't put objcopy on the path. 
-	cd build && PATH="${PATH}":"/opt/homebrew/opt/binutils/bin" objcopy --remove-section '__TEXT.__unwind_info' -O binary unikernel.o unikernel_stripped.img
+	cd build && PATH="${PATH}":"/opt/homebrew/opt/binutils/bin" objcopy --remove-section '__TEXT.__unwind_info' -O binary post_boot.o post_boot_stripped.img
 
-build/final_product.img: build/mbr.img build/unikernel_stripped.img
+build/unikernel.img: build/boot.img build/post_boot_stripped.img
 # This is super hacky, but it works at least on OS X.
 # The linker man page has this to say:
 #
@@ -36,7 +36,7 @@ build/final_product.img: build/mbr.img build/unikernel_stripped.img
 # If I add a comma in the directive, it works as expected, but that actually makes the project
 # MORE platform dependent than just depending on whatever linker we use doesn't do weird things
 # with reordering the functions.
-	cat build/mbr.img build/unikernel_stripped.img > build/final_product.img
+	cat build/boot.img build/post_boot_stripped.img > build/unikernel.img
 
 clean:
 	rm -rf build/*
@@ -45,4 +45,4 @@ clean:
 run-osx: all
 # If you have your own source tree of QEMU in your home directory, this will pick up the binaries
 # for you automatically.
-	PATH="${HOME}/qemu/build:${PATH}" ./scripts/run-qemu-osx.sh build/final_product.img
+	PATH="${HOME}/qemu/build:${PATH}" ./scripts/run-qemu-osx.sh build/unikernel.img
