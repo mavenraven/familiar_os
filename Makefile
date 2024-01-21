@@ -9,7 +9,6 @@ build/post_boot.o: src/c/*.c
 	cd src/c && clang -ffreestanding -nostdlib *.c  -arch x86_64 -o ../../build/post_boot.o
 
 build/post_boot_stripped.img: build/post_boot.o
-	export PATH="$PATH":"/opt/homebrew/opt/binutils/bin"
 	cd build && objcopy --remove-section '__TEXT.__unwind_info' -O binary post_boot.o post_boot_stripped.img
 
 build/unikernel.img: build/boot.img build/post_boot_stripped.img
