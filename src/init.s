@@ -25,7 +25,7 @@ jmp init
 init:
   mov sp, 0x7c00
 
-  call init_serial
+;  call init_serial
   
   push load
   push dx

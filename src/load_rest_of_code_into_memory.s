@@ -23,8 +23,6 @@
   %include "calling_convention.s"
 %endif
 
-drive: db 'drive: ', 0
-load_location: db 'load loc: ', 0
 sectors_read: db 'sectors read: ', 0
 disk_load_return_code: db 'return code ', 0
 
@@ -34,9 +32,6 @@ load_rest_of_code_into_memory:
   mov bx, [param1]
   mov dx, bx
   
-  push drive
-  call print
-  
   push dx
   call putx
 
@@ -44,9 +39,6 @@ load_rest_of_code_into_memory:
   mov es, ax
   mov bx, [param2]
 
-  push load_location
-  call print
-  
   push bx
   call putx
 
