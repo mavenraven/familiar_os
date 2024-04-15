@@ -33,44 +33,44 @@ main:
   call puts_vga
   push 0x51
   call write_char
-;  sub sp, 8
-;  push sp
-;  push 0xface
-;  call hex_to_str
+  sub sp, 8
+  push sp
+  push 0xface
+  call hex_to_str
 
-;  push sp
-;  call puts
-;  add sp, 8
+  push sp
+  call puts
+  add sp, 8
 
-;  call detect_rtl_card
+  call detect_rtl_card
 
  ; bus mastering
 
-;  mov ah, PCI.PCI_FUNCTION_ID
-;  mov al, PCI.FIND_PCI_DEVICE
-;
-;  mov cx, RTL.PCI_CONFIGURATION_REGISTERS.PCI_DEVICE_ID
-;  mov dx, RTL.PCI_CONFIGURATION_REGISTERS.PCI_VENDOR_ID
-;  mov si, 0
-;  
-;  int 0x1a
+  mov ah, PCI.PCI_FUNCTION_ID
+  mov al, PCI.FIND_PCI_DEVICE
 
-  ; read command register
-;  mov ah, PCI.PCI_FUNCTION_ID
-;  mov al, PCI.READ_CONFIG_WORD
-;  mov di, 4
+  mov cx, RTL.PCI_CONFIGURATION_REGISTERS.PCI_DEVICE_ID
+  mov dx, RTL.PCI_CONFIGURATION_REGISTERS.PCI_VENDOR_ID
+  mov si, 0
+  
+  int 0x1a
 
-;  int 0x1a
+; read command register
+  mov ah, PCI.PCI_FUNCTION_ID
+  mov al, PCI.READ_CONFIG_WORD
+  mov di, 4
 
-  ;command register, turn on the bus master bit
-;  or cx, 4
+  int 0x1a
 
-  ; then write it back 
-;  mov ah, PCI.PCI_FUNCTION_ID
-;  mov al, PCI.WRITE_CONFIG_WORD
-;  mov di, 4
+;command register, turn on the bus master bit
+ or cx, 4
 
-;  int 0x1a
+; then write it back 
+  mov ah, PCI.PCI_FUNCTION_ID
+  mov al, PCI.WRITE_CONFIG_WORD
+  mov di, 4
+
+  int 0x1a
  
 
 
@@ -87,37 +87,37 @@ main:
   ; https://github.com/mavenraven/sanos/blob/master/src/sys/krnl/dev.c#L159-L162
 
 
-  ; read second part of first BAR
-;  mov ah, PCI.PCI_FUNCTION_ID
-;  mov al, PCI.READ_CONFIG_WORD
-;  mov di, 18
-;  int 0x1a
+; read second part of first BAR
+  mov ah, PCI.PCI_FUNCTION_ID
+  mov al, PCI.READ_CONFIG_WORD
+  mov di, 18
+  int 0x1a
 
-;  push cx
-;  call putx
+  push cx
+  call putx
 
-  ; read first part of first BAR
-;  mov ah, PCI.PCI_FUNCTION_ID
-;  mov al, PCI.READ_CONFIG_WORD
-;  mov di, 16
-;  int 0x1a
+; read first part of first BAR
+ mov ah, PCI.PCI_FUNCTION_ID
+ mov al, PCI.READ_CONFIG_WORD
+ mov di, 16
+ int 0x1a
 
-;  push cx
-;  call putx
+ push cx
+ call putx
 
   ; on qemu the whole value is 0x0000c001. we bit shift 2 to the right because
   ; the low 2 bits are reserved.
 
-;  and cx, 0xFFFC
-;  push cx
-;  call putx
+ and cx, 0xFFFC
+ push cx
+ call putx
 
- ; read from the address PCI Revision ID as a santity check
-;  add cx, 0x005e
-;  mov dx, cx
-;  push dx
-;  call putx
+; read from the address PCI Revision ID as a santity check
+ add cx, 0x005e
+ mov dx, cx
+ push dx
+ call putx
 ;
-;  in ax, dx
-;  push ax
-;  call putx
+; in ax, dx
+; push ax
+; call putx
