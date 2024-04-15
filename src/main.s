@@ -29,6 +29,7 @@
 hello: db 'hello world', 0
 
 main:
+  push hello
   call puts_vga
   push 0x51
   call write_char
