@@ -27,6 +27,8 @@
 
 
 hello: db 'hello world', 0
+reseting_card: db 'reseting card.', 0
+card_reset: db 'card reset', 0
 
 main:
   push hello
@@ -112,12 +114,76 @@ main:
  push cx
  call putx
 
+; push the BAR for later delicious snacking
+push cx
+
 ; read from the address PCI Revision ID as a santity check
  add cx, 0x005e
  mov dx, cx
  push dx
  call putx
-;
-; in ax, dx
-; push ax
-; call putx
+
+ in ax, dx
+ push ax
+ call putx
+
+
+; ok, so it works as expected. QEMU has the revision ID for this card as 0x20, and that's what we see. 
+; now to do the step: Turning on the RTL8139 [https://wiki.osdev.org/RTL8139]
+
+pop cx
+
+; save the BAR again for more snacking
+push cx
+
+add cx, 0x52
+mov dx, cx
+
+mov ax, 0x0
+out dx, ax
+
+; Software Reset!
+
+pop cx
+
+; save the BAR again for more snacking
+push cx
+
+add cx, 0x37
+mov dx, cx
+
+mov ax, 0x10
+out dx, ax
+
+
+.software_reset_loop:
+in ax, dx
+and ax, 0x10
+cmp ax, 0x0
+je .software_reset_loop_end
+
+push reseting_card
+call puts
+
+jmp .software_reset_loop
+
+.software_reset_loop_end:
+
+push card_reset
+call puts
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
