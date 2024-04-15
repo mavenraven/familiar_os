@@ -9,29 +9,30 @@
 %endif
 
 puts_vga:
+; don't forget to add a note that DS is implictliy used for [], I'll definitely ; forget that in 3 monts
   prologue
 
   mov ax, 0xB800
-  mov ds, ax
+  mov es, ax
   mov di, 0x00
   mov bx, 0x0748
-  mov [ds:di], bx
+  mov [es:di], bx
 
-  mov ds, ax
+  mov es, ax
   mov di, 0x02
   mov bx, 0x0765
-  mov [ds:di], bx
+  mov es:[di], bx
 
-  mov ds, ax
+  mov es, ax
   mov di, 0x04
   mov bx, 0x076c
-  mov [ds:di], bx
+  mov [es:di], bx
 
   mov ax, 0xB800
-  mov ds, ax
+  mov es, ax
   mov di, 0x06
   mov bx, 0x076c
-  mov [ds:di], bx
+  mov [es:di], bx
 
   epilogue 0
   ret
