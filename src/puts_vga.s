@@ -15,18 +15,18 @@ puts_vga:
   mov di, 0x00
   mov es, ax
 
-  mov ax, [param1]
+  mov bx, [param1]
 
 .while:
-  mov bl, [ax]
-  cmp bl, 0
+  mov al, [bx]
+  cmp al, 0
   je .end
 
 
-  mov bh, 0x07
-  mov es:[di], bx
+  mov ah, 0x07
+  mov es:[di], ax
 
-  inc ax
+  inc bx
   add di, 2
   jmp .while
 
