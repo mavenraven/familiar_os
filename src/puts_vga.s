@@ -17,13 +17,11 @@ puts_vga:
   mov bx, 0x0748
   mov [ds:di], bx
 
-  mov ax, 0xB800
   mov ds, ax
   mov di, 0x02
   mov bx, 0x0765
   mov [ds:di], bx
 
-  mov ax, 0xB800
   mov ds, ax
   mov di, 0x04
   mov bx, 0x076c
