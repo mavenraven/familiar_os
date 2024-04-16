@@ -172,8 +172,20 @@ jmp .software_reset_loop
 push card_reset
 call puts
 
+; Init Receive buffer
+
+pop cx
+
+; save the BAR again for more snacking
+push cx
 
 
+add cx, 0x30
+mov dx, cx
+
+mov ax, 0xface
+
+out dx, ax
 
 
 
