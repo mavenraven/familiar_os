@@ -29,6 +29,8 @@
 hello: db 'hello world', 0
 reseting_card: db 'reseting card.', 0
 card_reset: db 'card reset', 0
+irq_num: db'IRQ ', 0
+bar: db'BAR ', 0
 
 main:
   push hello
@@ -94,6 +96,9 @@ main:
   mov al, PCI.READ_CONFIG_WORD
   mov di, 18
   int 0x1a
+
+  push bar
+  call puts 
 
   push cx
   call putx
@@ -217,7 +222,18 @@ mov ax, 0b01001111
 out dx, ax
 
 
+; Enable Receive and Transmitter
 
+pop cx
+
+; save the BAR again for more snacking
+push cx
+
+add cx, 0x37
+mov dx, cx
+
+mov ax, 0x0c
+out dx, ax
 
 
 
