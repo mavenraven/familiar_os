@@ -90,19 +90,6 @@ main:
   ; https://github.com/mavenraven/sanos/blob/master/src/sys/krnl/dev.c#L177-L182
   ; https://github.com/mavenraven/sanos/blob/master/src/sys/krnl/dev.c#L159-L162
 
-
-; read second part of first BAR
-  mov ah, PCI.PCI_FUNCTION_ID
-  mov al, PCI.READ_CONFIG_WORD
-  mov di, 18
-  int 0x1a
-
-  push bar
-  call puts 
-
-  push cx
-  call putx
-
 ; read first part of first BAR
  mov ah, PCI.PCI_FUNCTION_ID
  mov al, PCI.READ_CONFIG_WORD
