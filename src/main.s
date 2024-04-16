@@ -187,6 +187,34 @@ mov ax, 0xface
 
 out dx, ax
 
+; Set IMR + ISR
+
+pop cx
+
+; save the BAR again for more snacking
+push cx
+
+add cx, 0x3c
+mov dx, cx
+
+mov ax, 0x0005
+out dx, ax
+
+
+; Configuring receive buffer (RCR)
+
+pop cx
+
+; save the BAR again for more snacking
+push cx
+
+add cx, 0x44
+mov dx, cx
+
+
+; this turns on AB+AM+APM+AAP and also the WRAP Bit
+mov ax, 0b01001111
+out dx, ax
 
 
 
