@@ -25,8 +25,6 @@
   %include "irq_routine.s"
 %endif
 
-
-
 hello: db 'hello world', 0
 reseting_card: db 'reseting card.', 0
 card_reset: db 'card reset', 0
@@ -237,9 +235,17 @@ out dx, ax
 
 ; set up IVT
 
-push ds; save for later as we're going to use 0 as ds for the IVT set up
-xor ax, ax 
-mov ds, ax
+mov ax, 0
+mov es, ax
+
+mov ax, 0x73 ; coresponds to IRQ 11
+shl ax, 2; multiple by 4 since each int # takes 4 bytes
+mov di, ax
+
+lea dx, [irq_routine]
+mov [es:di], dx
+mov [es:di +2], cs
+sti
 
 
 
