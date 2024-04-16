@@ -5,11 +5,6 @@
   %include "puts.s"
 %endif
 
-%ifndef PUTS_VGA
-  %define PUTS_VGA
-  %include "puts_vga.s"
-%endif
-
 %ifndef DETECT_RTL_CARD
   %define DETECT_RTL_CARD
   %include "detect_rtl_card.s"
@@ -25,6 +20,12 @@
   %include "pcnet_constants.s"
 %endif
 
+%ifndef IRQ_ROUTINE
+  %define IRQ_ROUTINE
+  %include "irq_routine.s"
+%endif
+
+
 
 hello: db 'hello world', 0
 reseting_card: db 'reseting card.', 0
@@ -33,8 +34,6 @@ irq_num: db'IRQ ', 0
 bar: db'BAR ', 0
 
 main:
-  push hello
-  call puts_vga
   push 0x51
   call write_char
   sub sp, 8
@@ -93,7 +92,7 @@ main:
 ; read first part of first BAR
  mov ah, PCI.PCI_FUNCTION_ID
  mov al, PCI.READ_CONFIG_WORD
- mov di, 16
+ mov di, 0x10
  int 0x1a
 
  push cx
@@ -221,6 +220,29 @@ mov dx, cx
 
 mov ax, 0x0c
 out dx, ax
+
+; print IRQ
+ mov ah, PCI.PCI_FUNCTION_ID
+ mov al, PCI.READ_CONFIG_WORD
+ mov di, 0x3c
+ int 0x1a
+
+ and cx, 0x00ff
+
+ push irq_num
+ call puts
+
+ push cx
+ call putx
+
+; set up IVT
+
+push ds; save for later as we're going to use 0 as ds for the IVT set up
+xor ax, ax 
+mov ds, ax
+
+
+
 
 
 
