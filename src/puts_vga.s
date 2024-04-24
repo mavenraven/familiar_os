@@ -10,8 +10,8 @@
 
 puts_vga:
   prologue
-  mov ax, 0xB810
-  mov di, 0xFE
+  mov ax, 0xB800
+  mov di, 0x00
   mov es, ax
 
   mov bx, [param1]
