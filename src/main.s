@@ -5,6 +5,11 @@
   %include "puts.s"
 %endif
 
+%ifndef PUTS_VGA
+  %define PUTS_VGA
+  %include "puts_vga.s"
+%endif
+
 %ifndef DETECT_RTL_CARD
   %define DETECT_RTL_CARD
   %include "detect_rtl_card.s"
@@ -32,6 +37,8 @@ irq_num: db'IRQ ', 0
 bar: db'BAR ', 0
 
 main:
+  push hello
+  call puts_vga
   push 0x51
   call write_char
   sub sp, 8

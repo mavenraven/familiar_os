@@ -47,4 +47,4 @@ load:
 %endif
 
 ; https://stackoverflow.com/a/15690134
-times 1024 - ($ - $$) db 0
+times 2048 - ($ - $$) db 0
