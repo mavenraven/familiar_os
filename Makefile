@@ -4,6 +4,7 @@ all: build/$(o).img qemu/build/qemu-system-x86_64
 
 build/git_submodule_init_marker:
 	git submodule update --init
+	touch build/git_submodule_init_marker
 
 qemu/build/qemu-system-x86_64: build/git_submodule_init_marker qemu/hw/net/rtl8139.c qemu/hw/display/vga.c qemu/hw/net/e1000.c
 	mkdir -p qemu/build
