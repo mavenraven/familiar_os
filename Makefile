@@ -2,11 +2,10 @@ o ?= familiar_os
 
 all: build/$(o).img qemu/build/qemu-system-x86_64
 
-build/git_submodule_init_marker:
+qemu/.git:
 	git submodule update --init
-	touch build/git_submodule_init_marker
 
-qemu/build/qemu-system-x86_64: build/git_submodule_init_marker qemu/hw/net/rtl8139.c qemu/hw/display/vga.c qemu/hw/net/e1000.c
+qemu/build/qemu-system-x86_64: qemu/.git #qemu/hw/net/rtl8139.c qemu/hw/display/vga.c qemu/hw/net/e1000.c
 	mkdir -p qemu/build
 	cd qemu/build && ../configure && make
 
