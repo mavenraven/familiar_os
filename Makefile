@@ -2,8 +2,9 @@ o ?= familiar_os
 
 all: build/$(o).img qemu/build/qemu-system-x86_64
 
-qemu/build/qemu-system-x86_64:qemu/*
-	git submodule --init recursive
+qemu/build/qemu-system-x86_64: qemu/*
+	mkdir -p qemu/build
+	cd qemu/build && ../configure && make
 
 build/$(o).img: src/*.s
 	mkdir -p build
